@@ -1,0 +1,78 @@
+                                                 ===================GAMEPLAY RULES AND TUTORIAL====================
+
+This is a turn based game, thus you get a turn to attack then it is the AI's turn.
+The rules are simple:
+Each character has a Normal Attack (na) , Skill (s) , Ultimate (u) and sometimes a Follow-Up Attack (fua).
+Characters have energy to perform Ultimates and Skill Points to perform a Skill.
+
+Normal Attack: Does low to moderate damage, restores one skill point and some energy.
+
+Skill: Consumes one skill point per Skill performed and inflict Moderate to High damage, restores a good amount of energy.
+
+Ultimate: Consumes 100 energy to unleash a powerful attack dealing huge damage.
+
+Follow-Up Attack: A special attack that get triggered when certain conditions are met, its power and effects differ based on the character.
+
+Energy is capped at a 100, skill points are capped at 5.
+
+Do note that these are the basic rules, each character has its own personalized skills and effects thus their own rules to play with.
+
+Characters List provided for this game (10):
+Mydei, Phainon, Blade, The Herta, Sparxie, Dr. Ratio, Hyacine, Acheron, Kafka, Himeko.
+
+Characters skills breakdown:
+
+========== MYDEI ==========
+
+SPECIAL TRAITS: This character consumes his own hp to inflict damage, heals, can be revived.
+
+Normal Attack => "Vow Of Voyage": Inflicts damage based on 25% of his max hp.
+
+Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 35% of his current hp to deal 60% dmg based on his max hp. If his current hp is less than 10%, perform the attack but set his hp to 1.
+
+Ultimate => "Throne of Bones": Deal 80% dmg and heal 20% based on his own max hp. If his hp was less than 10% when performing the ultimate, increase the dmg and heal by +100%.
+
+Talent => "Blood for Blood": when Mydei is knocked down for the first time in battle, revive him with 30% of his max hp. This effect can only trigger once in battle.
+
+
+========== BLADE ==========
+
+SPECIAL TRAITS: This character consumes his own hp to inflict damage, heals.
+
+Normal Attack => "Shard Sword": Inflicts damage based on 25% of his max hp.
+
+Skill: => "Hellscape": Consumes one skill point to enter the Hellscape mode. Doesn't restore energy.
+Hellscape mode: Upon entering the state, perform an Enhanced Attack, lasts for 2 extra turns. Cannot unleash skill while in this state.
+Enhanced Attack: Consumes 25% of his current hp and increases the damage of the Normal Attack by 12% of his max hp. Doesn't restore skill points.
+
+Ultimate: Set his hp to 50% of his max hp (hp might increase or decrease) and inflict 90% dmg of his max hp.
+
+Talent: Whenever Blade loses hp by being attacked or from his own skills, gain one stack of Charge. When Charge reaches 5, resets to 0 and unleash a Follow-Up ATK dealing 60% dmg and healing 25% hp  based on his max hp.
+
+========= SPARXIE ==========
+
+SPECIAL TRAITS: This character consumes skill points to inflict damage based on her ATK. Increases the cap of Skill Points when using Sparxie to 8.
+
+Normal Attack => "Cat Got Your Flametoungue?": inflict 50% dmg of her max atk. Gains 2 Punchline.
+
+Skill => "Boom! Sparxicle's Poppin'": Start the livestream in which sparxie harvests "Engagement Farming" where there is a 40% chance to trigger "Straight Fire" and a 60% chance to trigger "Unreal Banger", you can keep consuming Skill Points to trigger the effects up to 10 times to then unleash the Special Normal Attack "Bloom! Winner Takes All". Each stack increases the final damage by 35%.
+Straight Fire: gain 2 punchlines and 2 Skill Points
+Unreal Banger: gain 1 punchline
+Special Attack: Unleash a powerful attack based on Sparxie's base atk and the number of skills consumed
+
+Ultimate => "Party's Wildin' and Cameras' Rollin'": Deals 150% of Sparxie's max atk. Gain 5 Punchlines.
+
+Elation Skill => Signal Overflow: The Great Encore!: Every 3 turns unleash a powerful attack based on Sparxie's max ATK and the number of Punchlines accumulated. Each Punchline increases the dmg by 3%.
+
+========== HYACINE ==========
+
+SPECIAL TRAITS: This character heals, does damage based on her max hp and summons her pet Little Ica who deals dmg based on the accumulated healing tally. She can increase her max hp.
+
+Normal Attack => "When Breeze Kisses Cirrus" : inflicts 15% dmg of her max hp.
+
+Skill => "Love Over The Rainbow": Consumes 1 Skill Point to heal herself 15% hp of her max hp. Summons Little Ica.
+Little Ica: has 50% of Hyacinthia's initial max hp and can perform his Special Attack when enough stacks are provided. If Hyacine's Skill was performed while Ica is on the field, Heals him for the same amount of hp too. Ica will remain on the field when summoned until he dies. While on the field, there is a 60% to target him instead of Hyacine.
+
+Ultimate => "We Who Fly Into Twilight": Increases max hp by 25% of her own max hp for 3 turns and heals herself for 30% of her initial max hp. Summons Little Ica, perform his Special Attack and gain 3 Stacks. If Little Ica was present on the field when performing this, heals him for the same amount of hp. Little Ica's max Hp is NOT affected.
+
+Little Ica's Special Attack => "Rainclouds, Time To Go!" : Consume 1 Stack and deals damage to the enemy based on 50% of the accumulated healing tally whenever Hyacine performs a Normal Attack/Skill. Clears 50% of the tally for each Stack consumed.

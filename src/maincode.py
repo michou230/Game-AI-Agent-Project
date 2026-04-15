@@ -13,6 +13,7 @@ class Character:
         self.skill_points = 2
         self.energy = 0
         pass
+
     #Normal Attack method
     def normalAttack(self,ai):
         ai.hp -= 10
@@ -47,36 +48,53 @@ class Character:
         else:
             print("Not enough energy to unleash Ultimate! please choose a different move: ")
             return 0
+        
+   
 
 #AI class inherits from Character class
 class AI(Character):
     #Normal Aattck class: changed text output
     def normalAttack(self,opp):
-        opp.hp -= 10
+        if opp.name == "Mydei":
+            opp.hp -= 300
+        else:
+            opp.takeDamage(300,self)
         self.skill_points += 1
         self.energy += 15
         if opp.hp >= 0:
             print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg! Your hp is now: {opp.hp}")
-        else: print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg! Your hp is now: 0")
+        else: 
+            print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg! Your hp is now: 0")
+            opp.takeDamage(300)
         
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
-            opp.hp -= 15
+            if opp.name == "Mydei":
+                opp.hp -= 500
+            else:
+                opp.takeDamage(300,self)
             self.skill_points -= 1
             self.energy += 30
             if opp.hp >= 0:
                 print(f"{self.name} unleashed their Skill: {self.skill_name} and caused 15 dmg! Your hp is now: {opp.hp}")
-            else: print(f"{self.name} unleashed their Skill:  {self.skill_name} and caused 15 dmg! Your hp is now: 0")
+            else: 
+                print(f"{self.name} unleashed their Skill:  {self.skill_name} and caused 15 dmg! Your hp is now: 0")
+                opp.takeDamage(300)
             
     #Ultimate class: changed text output
     def ultimate(self,opp):
         if self.energy >= 100:
-            opp.hp -= 40
+            if opp.name == "Mydei":
+                opp.hp -= 300
+            else:
+                opp.takeDamage(300,self)
             self.energy -= 100
             if opp.hp >= 0:
                 print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! Your hp is now: {opp.hp}")
-            else: print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! The opponents hp is now: 0")
+            else: 
+                print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! Your hp is now: 0")
+                opp.takeDamage(300)
 
     #AI random move based on available resources
     def ai_move(self,opponent):
@@ -105,7 +123,7 @@ class AI(Character):
             self.ultimate(opponent)
         
 
-mydei = Blade()
+mydei = Hyacine()
 char2 = AI("phainon","swipe","wrath","clap",20000)
 
 #MAIN LOOP FOR THE GAME
@@ -117,7 +135,9 @@ while pick == 0:
 while mydei.hp > 0 and char2.hp > 0:
     player_move = 0
     while player_move == 0:
-        move = int(input(f"please select your move:\n1 for normal attack\n2 for skill\n3 for ultimate\ncurrent skill points are {mydei.skill_points}\ncurrent energy is {mydei.energy}\ncurrent hp is {mydei.hp}\nOpponent's hp is {char2.hp}\nYou choose: "))
+        print("please select your move:\n1 for normal attack\n2 for skill\n3 for ultimate")
+        mydei.displayInfo(char2)
+        move = int(input(f"You choose: "))
         if move == 1:
             player_move = mydei.normalAttack(char2)
         elif move == 2:
