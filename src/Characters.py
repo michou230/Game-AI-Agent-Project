@@ -1,12 +1,25 @@
 import random
+from maincode import Character
 
-class Mydei():
+class Poisoned():
+    def Poison(self):
+        if self.poisoned == 0:
+            self.poisoned == 3
+            print(f"You've been Poisoned for 3 turns!")
+        else: 
+            self.poisoned -= 1
+            self.hp -= self.poisoned_dmg
+            print(f"Poison effect! lost {self.poisoned_dmg} hp")
+
+class Mydei(Poisoned):
     def __init__(self, hp = 4000):
         self.name = "Mydei"
         self.skill_name = "Deaths are Legion, Regrets are None"
         self.ultimate_name = "Throne of Bones"
         self.na_name = "Vow of voyage"
         self.hp = hp
+        self.poisoned = 0
+        self.poisoned_dmg = self.fullhp * 0.05
         self.fullhp = hp
         self.vendetta = 1
         self.skill_points = 2
@@ -95,7 +108,7 @@ class Mydei():
         print(f"Opponent's hp is {opp.hp}")   
 
 
-class Blade():
+class Blade(Poisoned):
     def __init__(self, hp = 4000):
         self.name = "Blade"
         self.skill_name = "Hellscape"
@@ -105,7 +118,9 @@ class Blade():
         self.hellscape = 0
         self.counter = 0
         self.stack = 0
+        self.poisoned = 0
         self.hp = hp
+        self.poisoned_dmg = self.fullhp * 0.05
         self.fullhp = hp
         self.skill_points = 2
         self.energy = 0
@@ -154,8 +169,8 @@ class Blade():
         return 1
     
     def followup(self,opp):
-        dmg = round(self.fullhp*60/100)
-        heal = round(self.fullhp*25/100)
+        dmg = round(self.fullhp*0.6)
+        heal = round(self.fullhp*0.25)
         self.hp += heal
         self.hpCap()
         opp.hp -= dmg
@@ -206,7 +221,7 @@ class Blade():
         print(f"Opponent's hp is {opp.hp}")
 
 
-class Sparxie():
+class Sparxie(Poisoned):
     def __init__(self, hp = 4000, atk = 1500):
         self.name = "Sparxie"
         self.skill_name = "Bloom! Winner Takes All"
@@ -215,7 +230,9 @@ class Sparxie():
         self.punchline = 0
         self.skillState = 0
         self.skillCounter = 0
+        self.poisoned_dmg = self.fullhp * 0.05
         self.hp = hp
+        self.poisoned = 0
         self.atk = atk
         self.turn = 0
         self.skill_points = 3
@@ -330,7 +347,7 @@ class Sparxie():
         print(f"Punchline Count: {self.punchline}")
 
 
-class Hyacine():
+class Hyacine(Poisoned):
     def __init__(self, hp = 4000):
         self.name = "Hyacine"
         self.skill_name = "Love Over The Rainbow"
@@ -343,6 +360,8 @@ class Hyacine():
         self.icafullhp = round(self.fullhp*0.5)
         self.heal = 1000
         self.ica = 0
+        self.poisoned = 0
+        self.poisoned_dmg = self.fullhp * 0.05
         self.ica_count = 0
         self.ica_hp = round(self.fullhp*0.5)
         self.ica_attack = "Rainclouds, Time To Go!"
