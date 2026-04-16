@@ -123,7 +123,7 @@ class AI(Character):
             self.ultimate(opponent)
         
 
-mydei = Hyacine()
+mydei = Mydei()
 char2 = AI("phainon","swipe","wrath","clap",20000)
 
 #MAIN LOOP FOR THE GAME
