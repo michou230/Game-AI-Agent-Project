@@ -123,7 +123,7 @@ class AI(Character):
             self.ultimate(opponent)
         
 
-mydei = Character()
+mydei = Sparxie()
 char2 = AI("phainon","swipe","wrath","clap",20000)
 
 #MAIN LOOP FOR THE GAME
