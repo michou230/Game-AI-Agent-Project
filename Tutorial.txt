@@ -15,6 +15,8 @@ Follow-Up Attack: A special attack that get triggered when certain conditions ar
 
 Energy is capped at a 100, skill points are capped at 5.
 
+Poison: At the start of each turn, sustain damage. Initially, the damage is 5% of the affected hp.
+
 Do note that these are the basic rules, each character has its own personalized skills and effects thus their own rules to play with.
 
 Characters List provided for this game (10):
@@ -30,7 +32,7 @@ Normal Attack => "Vow Of Voyage": Inflicts damage based on 25% of his max hp.
 
 Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 35% of his current hp to deal 60% dmg based on his max hp. If his current hp is less than 10%, perform the attack but set his hp to 1.
 
-Ultimate => "Throne of Bones": Deal 80% dmg and heal 20% based on his own max hp. If his hp was less than 10% when performing the ultimate, increase the dmg and heal by +100%.
+Ultimate => "Throne of Bones": Deal 80% dmg and heal 20% based on his own max hp. If his hp was less than 10% when performing the ultimate, increase the dmg and heal by 100%.
 
 Talent => "Blood for Blood": when Mydei is knocked down for the first time in battle, revive him with 30% of his max hp. This effect can only trigger once in battle.
 
@@ -71,7 +73,7 @@ SPECIAL TRAITS: This character heals, does damage based on her max hp and summon
 Normal Attack => "When Breeze Kisses Cirrus" : inflicts 15% dmg of her max hp.
 
 Skill => "Love Over The Rainbow": Consumes 1 Skill Point to heal herself 15% hp of her max hp. Summons Little Ica.
-Little Ica: has 50% of Hyacinthia's initial max hp and can perform his Special Attack when enough stacks are provided. If Hyacine's Skill was performed while Ica is on the field, Heals him for the same amount of hp too. Ica will remain on the field when summoned until he dies. While on the field, there is a 60% to target him instead of Hyacine.
+Little Ica: has 50% of Hyacinthia's initial max hp and can perform his Special Attack when enough stacks are provided. If Hyacine's Skill was performed while Ica is on the field, Heals him for the same amount of hp too. Ica will remain on the field when summoned until he dies. While on the field, there is a 60% to target him instead of Hyacine. Cannot be poisoned.
 
 Ultimate => "We Who Fly Into Twilight": Increases max hp by 25% of her own max hp for 3 turns and heals herself for 30% of her initial max hp. Summons Little Ica, perform his Special Attack and gain 3 Stacks. If Little Ica was present on the field when performing this, heals him for the same amount of hp. Little Ica's max Hp is NOT affected.
 
