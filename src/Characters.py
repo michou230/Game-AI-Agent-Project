@@ -1,26 +1,29 @@
 import random
-from maincode import Character
+from colorama import Fore, Style, init
 
+init()
 class Poisoned():
     def Poison(self):
-        if self.poisoned == 0:
-            self.poisoned == 3
-            print(f"You've been Poisoned for 3 turns!")
-        else: 
-            self.poisoned -= 1
-            self.hp -= self.poisoned_dmg
-            print(f"Poison effect! lost {self.poisoned_dmg} hp")
+        self.poisoned -= 1
+        self.hp -= self.poisoned_dmg
+        print(f"{Fore.MAGENTA}Poison effect! {Style.RESET_ALL} lost {self.poisoned_dmg} hp")
+
+    def energyCap(self,er):
+       if self.energy < 100:
+           self.energy += er
+       if self.energy > 100:
+         self.energy = 100
 
 class Mydei(Poisoned):
-    def __init__(self, hp = 4000):
+    def __init__(self, hp = 5000):
         self.name = "Mydei"
         self.skill_name = "Deaths are Legion, Regrets are None"
         self.ultimate_name = "Throne of Bones"
         self.na_name = "Vow of voyage"
         self.hp = hp
+        self.fullhp = hp
         self.poisoned = 0
         self.poisoned_dmg = self.fullhp * 0.05
-        self.fullhp = hp
         self.vendetta = 1
         self.skill_points = 2
         self.energy = 0
@@ -28,88 +31,67 @@ class Mydei(Poisoned):
     def hpCap(self):
         if self.hp > self.fullhp:
             self.hp = self.fullhp
-
-    def energyCap(self):
-        if self.energy > 100:
-            self.energy = 100
     
     def takeDamage(self,dmg,opp=None):
         self.hp -= dmg
         if self.hp <= 0 and self.vendetta == 1:
             self.vendetta = 0
-            self.hp = round(self.fullhp*30/100)
-            print(f"Mydei has died and consumed his Vendetta token to get revived! restored hp to {self.hp}")
+            self.hp = round(self.fullhp*0.3)
+            print(f"You died. Consumed Vendetta token to get revived with {Fore.GREEN}{self.hp}{Style.RESET_ALL}")
     
     def normalAttack(self,opp):
-        dmg = round(self.fullhp*25/100)
-        opp.hp -= dmg
+        dmg = round(self.fullhp*0.25)
         if self.skill_points < 5:
             self.skill_points += 1
-        if self.energy < 100:
-            self.energy += 15
-            self.energyCap()
-        if opp.hp >= 0:
-            print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-        else: print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+        self.energyCap(15)
+        print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
+        opp.takeDamage(dmg,self)
         return 1
         
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
-            dmg = round(self.fullhp*60/100)
-            if self.hp < round(self.fullhp*10/100):
+            dmg = round(self.fullhp*0.6)
+            if self.hp < round(self.fullhp*0.1):
                 self.hp = 1
-                opp.hp -= dmg
-                self.skill_points -= 1
-                if self.energy < 100:
-                    self.energy += 50
-                    self.energyCap()
-                if opp.hp >= 0:
-                    print(f"you consumed all of your remaining hp and unleashed your Skill: {self.skill_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-                else: print(f"you consumed all of your remaining hp and unleashed your Skill:  {self.skill_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
-            else: 
-                self.hp -= round(self.hp*35/100)
-                opp.hp -= dmg
-                self.skill_points -= 1
-                if self.energy < 100:
-                    self.energy += 50
-                    self.energyCap()
-                if opp.hp >= 0:
-                    print(f"you consumed 35% of your current hp and unleashed your Skill: {self.skill_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-                else: print(f"you consumed 35% of your current hp and unleashed your Skill: {self.skill_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+                print(f"[Skill]: {self.skill_name} => -99% HP, {dmg}💥")
+            else:
+                self.hp -= round(self.hp*0.35)
+                print(f"[Skill]: {self.skill_name} => -35% HP, {dmg}💥")
+            opp.takeDamage(dmg,self)
+            self.skill_points -= 1
+            self.energyCap(35)
             return 1
         else:
-            print("Not enough skill points to unleash Skill! please choose a different move: ")
+            print("Not enough skill points to unleash Skill! please choose a different move.\n")
             return 0  
     #Ultimate class: changed text output
     def ultimate(self,opp):
         if self.energy == 100:
-            if self.hp <= round(self.fullhp*10/100):
-                dmg = round(self.fullhp*160/100)
-                heal= round(self.fullhp*40/100)
+            if self.hp <= round(self.fullhp*0.1):
+                dmg = round(self.fullhp*1.6)
+                heal= round(self.fullhp*0.4)
             else:
-                dmg = round(self.fullhp*80/100)
-                heal= round(self.fullhp*20/100)
+                dmg = round(self.fullhp*0.8)
+                heal= round(self.fullhp*0.2)
             self.hp += heal
             self.hpCap()
-            opp.hp -= dmg
             self.energy -= 100
-            if opp.hp >= 0:
-                print(f"you unleashed your Ultimate: {self.ultimate_name} and caused {dmg} dmg while healing {heal} hp! Your hp is now {self.hp} and your opponent's hp is now: {opp.hp}")
-            else: print(f"you unleashed your Ultimate: {self.ultimate_name} and caused {dmg} dmg while healing {heal} hp! Your opponent's hp is now: 0")
+            print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥, ➕{heal}")
+            opp.takeDamage(dmg,self)
             return 1
         else:
-            print("Not enough energy to unleash Ultimate! please choose a different move: ")
+            print("Not enough energy to unleash Ultimate! please choose a different move.\n")
             return 0
-    def displayInfo(self,opp):
-        print(f"current skill points are {self.skill_points}")
-        print(f"current energy is {self.energy}")
-        print(f"current hp is {self.hp}")
-        print(f"Opponent's hp is {opp.hp}")   
+    def displayInfo(self):
+        print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
+        print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
+        print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
+        print(15*"-")
 
 
 class Blade(Poisoned):
-    def __init__(self, hp = 4000):
+    def __init__(self, hp = 5000):
         self.name = "Blade"
         self.skill_name = "Hellscape"
         self.ultimate_name = "Death Sentence"
@@ -120,14 +102,10 @@ class Blade(Poisoned):
         self.stack = 0
         self.poisoned = 0
         self.hp = hp
-        self.poisoned_dmg = self.fullhp * 0.05
         self.fullhp = hp
+        self.poisoned_dmg = self.fullhp * 0.05
         self.skill_points = 2
         self.energy = 0
-
-    def energyCap(self):
-        if self.energy > 100:
-            self.energy = 100
 
     def hpCap(self):
         if self.hp > self.fullhp:
@@ -141,27 +119,19 @@ class Blade(Poisoned):
       
     def normalAttack(self,opp):
         if self.hellscape == 0:
-            dmg = round(self.fullhp*25/100)
-            opp.hp -= dmg
+            dmg = round(self.fullhp*0.25)
             if self.skill_points < 5:
                 self.skill_points += 1
-            if self.energy < 100:
-                self.energy += 15
-                self.energyCap()
-            if opp.hp >= 0:
-                print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-            else: print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+            self.energyCap(15)
+            print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
         else:
             self.counter += 1
-            dmg = round(self.fullhp*37/100)
-            self.takeDamage(self.hp*25/100)
-            if self.energy < 100:
-                self.energy += 30
-                self.energyCap()
-            opp.hp -= dmg
-            if opp.hp >= 0:
-                print(f"You consumed 25% of your hp to unleash your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-            else: print(f"You consumed 25% of your hp to unleash your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+            dmg = round(self.fullhp*0.37)
+            self.takeDamage(self.hp*0.25)
+            self.energyCap(30)
+            print(f"[Enhanced Normal Attack]: {self.na_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
             if self.counter == 3:
                 print("Exited Hellscape mode!")
                 self.hellscape = 0
@@ -173,11 +143,9 @@ class Blade(Poisoned):
         heal = round(self.fullhp*0.25)
         self.hp += heal
         self.hpCap()
-        opp.hp -= dmg
-        if self.energy < 100:
-            self.energy += 25
-            self.energyCap()
-        print(f"Performed the Follow-up ATK: Shuhu's Gift and caused {dmg} while healing {heal}")
+        self.energyCap(25)
+        opp.takeDamage(dmg,self)
+        print(f"[Follow-up ATK]: Shuhu's Gift => {dmg}💥, ➕{heal}")
         self.stack = 0
     
     #Skill class: changed text output
@@ -190,39 +158,38 @@ class Blade(Poisoned):
                 self.normalAttack(opp)
                 return 1
             else:
-                print("Not enough skill points to unleash Skill! please choose a different move: ")
+                print("Not enough skill points to unleash Skill! please choose a different move.\n")
                 return 0  
         else: 
-            print("You are in Hellscape mode! cannot perform skill again.")
+            print("You are in Hellscape mode! cannot perform skill again.\n")
             return 0
     
     #Ultimate class: changed text output
     def ultimate(self,opp):
         if self.energy == 100:
-            if self.hp > round(self.fullhp*50/100):
+            if self.hp > round(self.fullhp*0.5):
                 self.stack += 1
-            self.hp = round(self.fullhp*50/100)
-            dmg = round(self.fullhp*90/100)
-            opp.hp -= dmg
+            self.hp = round(self.fullhp*0.5)
+            dmg = round(self.fullhp*0.9)
             self.energy -= 100
-            if opp.hp >= 0:
-                print(f"you unleashed your Ultimate: {self.ultimate_name} and caused {dmg} dmg while your hp has been set to {self.hp}! Your opponent's hp is now: {opp.hp}")
-            else: print(f"you unleashed your Ultimate: {self.ultimate_name} and caused {dmg} dmg while your hp has been set to {self.hp}! Your opponent's hp is now: 0")
+            print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
             if self.stack >= 5:
                 self.followup(opp)
             return 1
         else:
-            print("Not enough energy to unleash Ultimate! please choose a different move: ")
+            print("Not enough energy to unleash Ultimate! please choose a different move.\n")
             return 0
-    def displayInfo(self,opp):
-        print(f"current skill points are {self.skill_points}")
-        print(f"current energy is {self.energy}")
-        print(f"current hp is {self.hp}")
-        print(f"Opponent's hp is {opp.hp}")
-
+        
+    def displayInfo(self):
+        print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
+        print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
+        print(f"[FUA-STACKS]: {Fore.LIGHTBLACK_EX}{self.stack}{Style.RESET_ALL}")
+        print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
+        print(15*"-")
 
 class Sparxie(Poisoned):
-    def __init__(self, hp = 4000, atk = 1500):
+    def __init__(self, hp = 5000, atk = 1500):
         self.name = "Sparxie"
         self.skill_name = "Bloom! Winner Takes All"
         self.ultimate_name = "Party's Wildin' and Cameras' Rollin'"
@@ -230,9 +197,11 @@ class Sparxie(Poisoned):
         self.punchline = 0
         self.skillState = 0
         self.skillCounter = 0
+        self.fullhp = hp
         self.poisoned_dmg = self.fullhp * 0.05
         self.hp = hp
         self.poisoned = 0
+        self.fullatk = atk
         self.atk = atk
         self.turn = 0
         self.skill_points = 3
@@ -242,17 +211,11 @@ class Sparxie(Poisoned):
         self.turn += 1
         if self.turn == 3:
             self.turn = 0
-            dmg = round(self.atk + (self.punchline*3*self.atk/100))
+            dmg = round(self.atk + (self.punchline*0.03*self.atk))
+            self.energyCap(25)
+            print(f"[Elation Skill]: Signal Overflow: The Great Encore! => {dmg}💥 through {self.punchline} Punchlines!")
             opp.hp -= dmg
-            if self.energy < 100:
-                self.energy += 25
-                self.energyCap()
-            print(f"Performed the Elation Skill: Signal Overflow: The Great Encore! Consumed {self.punchline} Punchlines and Inflicted {dmg} dmg!")
             self.punchline = 0
-
-    def energyCap(self):
-        if self.energy > 100:
-            self.energy = 100
     
     def takeDamage(self,dmg,opp=None):
         self.hp -= dmg
@@ -264,91 +227,90 @@ class Sparxie(Poisoned):
 
     def normalAttack(self,opp):
         if self.skillState == 0:
-            dmg = round(self.atk*50/100)
+            dmg = round(self.atk*0.5)
             self.punchline += 2
-            opp.hp -= dmg
             self.spCap()
-            if self.energy < 100:
-                self.energy += 15
-                self.energyCap()
-            if opp.hp >= 0:
-                print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-            else: print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+            self.energyCap(15)
+            print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
         else:
-            dmg = round(self.atk*self.skillCounter*35/100)
+            dmg = round(self.atk*self.skillCounter*0.35)
             self.skillCounter = 0
             self.skillState = 0
-            if self.energy < 100:
-                self.energy += 30
-                self.energyCap()
-            opp.hp -= dmg
-            if opp.hp >= 0:
-                print(f"You unleashed your Skill Attack: {self.skill_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-            else: print(f"You unleashed your Skill Attack: {self.skill_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+            self.energyCap(30)
+            print(f"[Skill]: {self.skill_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
         self.turnCounter(opp)
         return 1
     
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
-            if self.skillState == 0:
-                self.skillState = 1
-                buff = ["Straight Fire","Unreal Banger"]
-                weight = [40,60]
-                while self.skill_points > 0 and self.skillCounter < 10:
-                    print("Boom! Sparxicle's Poppin' Started!")
-                    self.skill_points -= 1
-                    self.skillCounter += 1
-                    buffpick = random.choices(buff,weight)[0]
-                    if buffpick == "Straight Fire":
-                        self.punchline += 2
-                        self.spCap()
-                        self.spCap()
-                        print("Engagement Farming: Straight Fire triggered!")
-                    else: 
-                        self.punchline += 1
-                        print("Engagement Farming: Unreal Banger triggered!")
-                    decision = int(input(f"Remaining Skill points {self.skill_points}--Consumed skill points (/10): {self.skillCounter}\nConsume more Skill Points (1) or Attack (2)?: "))
+            self.skillState = 1
+            buff = ["Straight Fire","Unreal Banger"]
+            weight = [30,70]
+            print("Boom! Sparxicle's Poppin' Started!")
+            while self.skill_points > 0 and self.skillCounter < 10:
+                self.skill_points -= 1
+                self.skillCounter += 1
+                buffpick = random.choices(buff,weight)[0]
+                if buffpick == "Straight Fire":
+                    self.punchline += 2
+                    self.spCap()
+                    self.spCap()
+                    print(f"Engagement Farming: {Fore.RED}Straight Fire{Style.RESET_ALL} triggered!")
+                else: 
+                    self.punchline += 1
+                    print(f"Engagement Farming: {Fore.YELLOW}Unreal Banger{Style.RESET_ALL} triggered!")
+                    pick = 0
+                    while pick == 0:
+                        try:
+                            decision = int(input(f"[SP]: {self.skill_points} -- Consumed SP: ({self.skillCounter}/10)\nConsume more SP (1) or Attack (2)?: "))
+                            pick = 1
+                        except ValueError:
+                            print("please pick a number.")
                     while decision not in [1,2]:
-                        print("Please pick a number between 1 (consume skills) or 2 (Attack) only: ")
-                        decision = int(input())
+                        try:
+                            decision = int(input("Please pick a number between 1 (consume SP) or 2 (Attack) only: "))
+                        except ValueError:
+                            print("please pick a number.")
                     while decision == 1:
                         if self.skill_points == 0 or self.skillCounter == 10:
-                            print("Cannot consume any more Skill Points. Pick 2 to Attack: ")
-                            decision = int(input())
+                            try:
+                                decision = int(input("Cannot consume any more Skill Points. Pick 2 to Attack: "))
+                            except ValueError:
+                                print("please pick a number.")
                         else: break
                     if decision == 2:
                         self.normalAttack(opp)
                         break
             return 1
         else:
-            print("Not enough skill points to unleash Skill! please choose a different move: ")
+            print("Not enough skill points to unleash Skill! please choose a different move.\n")
             return 0  
     
     #Ultimate class: changed text output
     def ultimate(self,opp):
         if self.energy == 100:
-            dmg = round(self.atk*150/100)
+            dmg = round(self.atk*1.5)
             self.punchline += 5
-            opp.hp -= dmg
             self.energy -= 100
-            if opp.hp >= 0:
-                print(f"you unleashed your Ultimate: {self.ultimate_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-            else: print(f"you unleashed your Ultimate: {self.ultimate_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+            print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
             return 1
         else:
-            print("Not enough energy to unleash Ultimate! please choose a different move: ")
+            print("Not enough energy to unleash Ultimate! please choose a different move.\n")
             return 0
-    def displayInfo(self,opp):
-        print(f"current skill points are {self.skill_points}")
-        print(f"current energy is {self.energy}")
-        print(f"current hp is {self.hp}")
-        print(f"Opponent's hp is {opp.hp}")
-        print(f"Punchline Count: {self.punchline}")
-
+        
+    def displayInfo(self):
+        print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{self.atk}{Style.RESET_ALL}")
+        print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
+        print(f"[PUNCHLINE]: {Fore.LIGHTBLACK_EX}{self.punchline}{Style.RESET_ALL}")
+        print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
+        print(15*"-")
 
 class Hyacine(Poisoned):
-    def __init__(self, hp = 4000):
+    def __init__(self, hp = 5500):
         self.name = "Hyacine"
         self.skill_name = "Love Over The Rainbow"
         self.ultimate_name = "We Who Fly Into Twilight"
@@ -368,10 +330,6 @@ class Hyacine(Poisoned):
         self.skill_points = 2
         self.energy = 0
     
-    def energyCap(self):
-        if self.energy > 100:
-            self.energy = 100
-    
     def hpCap(self):
         if self.hp > self.fullhp:
             self.hp = self.fullhp
@@ -387,16 +345,13 @@ class Hyacine(Poisoned):
         attacked = random.choices(char,weight)[0]
         if attacked == "hyacine":
             self.hp -= dmg
-            if self.hp > 0:
-                print(f"Hyacine has suffered {dmg} dmg! Your hp is now {self.hp}")
-            else: print(f"Hyacine has suffered {dmg} dmg! Your hp is now: 0")
+            print(f"Hyacine has suffered {dmg}💥")
         else: 
             self.ica_hp -= dmg
+            print(f"Little Ica has suffered {dmg}💥")
             if self.ica_hp <= 0:
                 self.ica = 0
-                print(f"Little Ica has suffered {dmg} dmg! his hp is now: 0")
                 print("Ica has left the field.")
-            else: print(f"Little Ica has suffered {dmg} dmg! his hp is now {self.ica_hp}")
             
         
     def icaDamage(self):
@@ -407,74 +362,48 @@ class Hyacine(Poisoned):
         return dmg
     
     def normalAttack(self,opp):
-        if self.ica == 0:
-            dmg = round(self.fullhp*15/100)
-            opp.hp -= dmg
-            if self.skill_points < 5:
-                self.skill_points += 1
-            if self.energy < 100:
-                self.energy += 15
-                self.energyCap()
-            if opp.hp >= 0:
-                print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-            else: print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
-        else:
-            dmg = round(self.fullhp*15/100) 
-            opp.hp -= dmg
-            if self.skill_points < 5:
-                self.skill_points += 1
-            if self.energy < 100:
-                self.energy += 25
-                self.energyCap()
+        dmg = round(self.fullhp*0.15)
+        if self.skill_points < 5:
+            self.skill_points += 1
+        self.energyCap(15)
+        print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
+        opp.takeDamage(dmg,self)
+        if self.ica == 1:
             if self.ica_count >= 1:
+                self.energyCap(10)
                 ica = self.icaDamage()
-                opp.hp -= ica
-                if opp.hp >= 0:
-                    print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Little ica assisted and unleashed his Attack: {self.ica_attack} dealing {ica} dmg! Your opponent's hp is now: {opp.hp}")
-                else: print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Little ica assisted and unleashed his Attack: {self.ica_attack} dealing {ica} dmg! Your opponent's hp is now: 0")
-            else:
-                if opp.hp >= 0:
-                    print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: {opp.hp}")
-                else: print(f"You unleashed your Normal Attack: {self.na_name} and caused {dmg} dmg! Your opponent's hp is now: 0")
+                print(f"[Ica: Normal Attack]: {self.ica_attack} => {ica}💥")
+                opp.takeDamage(ica,self)
         if self.fullhp_count > 0:
             self.fullhp_count -= 1
             if self.fullhp_count == 0:
                 self.fullhp -= self.fullhpbuff
                 self.hpCap()
-                print("Hp Buff ended.")
+                print("HP Buff ended.")
         return 1
         
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
+            heal = round(self.fullhp*15/100)
+            self.hp += heal
+            self.hpCap()
+            self.skill_points -= 1
+            self.energyCap(50)
             if self.ica == 0:
-                heal = round(self.fullhp*15/100)
-                self.hp += heal
-                self.hpCap()
                 self.ica = 1
                 self.ica_hp = self.icafullhp
-                self.skill_points -= 1
-                if self.energy < 100:
-                    self.energy += 50
-                    self.energyCap()
-                print(f"you unleashed your Skill: {self.skill_name} and healed {heal} hp!")
+                print(f"[Skill]: {self.skill_name} => ➕{heal}")
                 print("Summoned Little Ica!")
             else:
-                 heal = round(self.fullhp*15/100)
-                 self.hp += heal
-                 self.heal += heal
                  self.ica_hp += heal
                  self.heal += heal
                  self.hpCap()
-                 self.skill_points -= 1
-                 if self.energy < 100:
-                  self.energy += 50
-                  self.energyCap()
-                 print(f"you unleashed your Skill: {self.skill_name} and healed both you and Little Ica by {heal} hp!")
+                 print(f"[Skill]: {self.skill_name} => ➕{heal} (Ica too)")
                  if self.ica_count >= 1:
                      dmg = self.icaDamage()
-                     opp.hp -= dmg
-                     print(f"Little Ica performed his Attack: {self.ica_attack} dealing {dmg} dmg! {self.ica_count} attacks left!")
+                     print(f"[Ica: Normal Attack]: {self.ica_attack} => {dmg}💥")
+                     opp.takeDamage(dmg,self)
             if self.fullhp_count > 0:
                 self.fullhp_count -= 1
                 if self.fullhp_count == 0:
@@ -483,7 +412,7 @@ class Hyacine(Poisoned):
                     print("Hp Buff ended.")
             return 1
         else:
-            print("Not enough skill points to unleash Skill! please choose a different move: ")
+            print("Not enough skill points to unleash Skill! please choose a different move.\n")
             return 0  
         
     #Ultimate class: changed text output
@@ -494,39 +423,119 @@ class Hyacine(Poisoned):
             self.hp += heal
             self.hpCap()
             self.heal += heal
-            print(f"you unleashed your Ultimate: {self.ultimate_name} and healed {heal} hp while increasing your max hp to {self.fullhp} hp for 3 turns! Your hp is now {self.hp} and your opponent's hp is now: {opp.hp}")
+            print(f"[Ultimate]: {self.ultimate_name} => ➕{heal}, new max [HP] => {self.fullhp}")
             self.fullhp_count = 3
             if self.ica == 0:
                 self.ica = 1
                 self.ica_hp = self.icafullhp
                 print("Summoned Little Ica!")
-                self.ica_count = 4
-                dmg = self.icaDamage()
-                opp.hp -= dmg
-                print(f"Little Ica performed his Attack: {self.ica_attack} dealing {dmg} dmg! reseted the attacks to {self.ica_count}")
             else:
                 self.ica_hp += heal
                 self.hpCap()
                 self.heal += heal
-                print(f"Healed Little Ica! his hp is now {self.ica_hp}")
-                self.ica_count = 4
-                dmg = self.icaDamage()
-                opp.hp -= dmg
-                print(f"Little Ica performed his Attack: {self.ica_attack} dealing {dmg} dmg! reseted the attacks to {self.ica_count}")
+                print(f"Healed Little Ica too!")
+            self.ica_count = 4
+            dmg = self.icaDamage()
+            print(f"[Ica: Normal Attack]: {self.ica_attack} => {dmg}💥")
+            opp.takeDamage(dmg,self)
             self.energy -= 100            
             return 1
         else:
-            print("Not enough energy to unleash Ultimate! please choose a different move: ")
+            print("Not enough energy to unleash Ultimate! please choose a different move.\n")
             return 0
-    def displayInfo(self,opp):
-        print(f"current skill points are {self.skill_points}")
-        print(f"current energy is {self.energy}")
-        print(f"current hp is {self.hp}")
-        if self.ica == 0:
-            print(f"Ica is not on the field.")
-        else:
-            print(f"current Ica hp is {self.ica_hp}")
-        print(f"Opponent's hp is {opp.hp}") 
+        
+    def displayInfo(self):
+        print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
+        print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
         if self.fullhp_count > 0:
-            print("HP Buff: Activated.")
-        else: print("HP Buff deactivated.")
+            print(f"[HP-BUFF]: Activated ")
+        else: print(f"[HP-BUFF]: Deactivated ")
+        if self.ica == 1:
+            print(f"[PET]: Little Ica")
+            print(f"[HP]: {Fore.GREEN}{round(self.ica_hp)}{Style.RESET_ALL}")
+            print(f"[Ica-SPECIAL ATK]: {Fore.LIGHTBLACK_EX}{self.ica_count}{Style.RESET_ALL}")
+        print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
+        print(15*"-")
+
+class Kafka(Poisoned):
+    def __init__(self, hp = 4500, atk = 2000):
+        self.name = "Kafka"
+        self.skill_name = "Caressing Moonlight"
+        self.ultimate_name = "Twilight Trill"
+        self.na_name = "Midnight Tumult"
+        self.fua_counter = 0
+        self.poisoned = 0
+        self.hp = hp
+        self.fullhp = hp
+        self.poisoned_dmg = self.fullhp * 0.05
+        self.atk = atk
+        self.fullatk = atk
+        self.skill_points = 2
+        self.energy = 0
+
+    def takeDamage(self,dmg,opp=None):
+        self.hp -= dmg
+        if self.atk < self.fullatk + self.fullatk * 0.25:
+            self.atk += self.fullatk * 0.025
+            print(f"+{round(self.fullatk * 0.025)} ATK")
+      
+    def normalAttack(self,opp):
+            dmg = round(self.atk*0.25)
+            if self.skill_points < 5:
+                self.skill_points += 1
+            self.energyCap(20)
+            print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
+            if self.fua_counter >= 1:
+                self.followup(opp)
+            return 1
+    
+    def followup(self,opp):
+        self.fua_counter -= 1
+        dmg = round(self.atk*0.15)
+        opp.poisoned += 2
+        self.energyCap(25)
+        print(f"[Follow-up ATK]: Gentle but Cruel => {dmg}💥\nIncreased opponent's poisoned state to {opp.poisoned}")
+        opp.takeDamage(dmg,self)
+    
+    #Skill class: changed text output
+    def skill(self,opp):
+        if self.skill_points > 0:
+            dmg = round(self.atk*0.4)
+            self.skill_points -= 1
+            self.energyCap(30)
+            print(f"[Skill]: {self.skill_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
+            if opp.poisoned >= 1:
+                opp.hp -= round(opp.poisoned_dmg)
+                print(f"[DOT] => {round(opp.poisoned_dmg)}💥")
+            if self.fua_counter >= 1:
+                self.followup(opp)
+            return 1
+        else:
+            print("Not enough skill points to unleash Skill! please choose a different move.\n")
+            return 0  
+            
+    
+    #Ultimate class: changed text output
+    def ultimate(self,opp):
+        if self.energy == 100:
+            dmg = round(self.atk*90/100)
+            self.energy -= 100
+            print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
+            opp.takeDamage(dmg,self)
+            self.fua_counter += 2
+            if opp.poisoned >= 1:
+                opp.hp -= round(opp.poisoned_dmg*2)
+                print(f"[DOT] => {round(opp.poisoned_dmg*2)}💥")
+            return 1
+        else:
+            print("Not enough energy to unleash Ultimate! please choose a different move.\n")
+            return 0
+        
+    def displayInfo(self):
+        print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
+        print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
+        print(f"[FUA]: {Fore.LIGHTBLACK_EX}{self.fua_counter}{Style.RESET_ALL}")
+        print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}\n")
+        print(15*"-")
