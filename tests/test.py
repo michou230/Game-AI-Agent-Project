@@ -4,12 +4,13 @@ from Characters import *
 #Main characters class
 class Character:
     #initialization
-    def __init__(self,name = "Character",skill= "Skill",ultimate= "Ultimate",na = "Normal Attack",hp = 100):
+    def __init__(self,name = "Character",na = "Normal Attack",skill= "Skill",ultimate= "Ultimate",hp = 100):
         self.name = name
         self.skill_name = skill
         self.ultimate_name = ultimate
         self.na_name = na
         self.hp = hp
+        self.fullhp = hp
         self.skill_points = 2
         self.energy = 0
         pass
@@ -53,27 +54,33 @@ class Character:
 
 #AI class inherits from Character class
 class AI(Character):
+    def __init__(self, na = "Normal Attack", name = "Character",skill= "Skill",ultimate= "Ultimate",hp = 100, atk = 1000):
+        super().__init__(name,skill,ultimate,na,hp)
+        self.atk = atk
+        self.poisoned = 0
+        self.poisoned_dmg = self.fullhp*0.05
+        pass
+
+    def Poison(self):
+        self.poisoned -= 1
+        self.hp -= self.poisoned_dmg
+        print(f"Poison effect! The opponent lost {self.poisoned_dmg} hp")
+        
     #Normal Aattck class: changed text output
     def normalAttack(self,opp):
-        if opp.name == "Mydei":
-            opp.hp -= 300
-        else:
-            opp.takeDamage(300,self)
+        print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg!")
+        opp.takeDamage(self.atk*0.2,self)
         self.skill_points += 1
         self.energy += 15
-        if opp.hp >= 0:
-            print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg! Your hp is now: {opp.hp}")
-        else: 
-            print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg! Your hp is now: 0")
-            opp.takeDamage(300)
+        
         
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
             if opp.name == "Mydei":
-                opp.hp -= 500
+                opp.hp -= self.atk * 0.6
             else:
-                opp.takeDamage(300,self)
+                opp.takeDamage(self.atk * 0.6,self)
             self.skill_points -= 1
             self.energy += 30
             if opp.hp >= 0:
@@ -110,7 +117,7 @@ class AI(Character):
         if self.energy >= 100:
             available.append("ultimate")
             proba.append(70)
-        if "ultimate" in available and self.hp >= 40:
+        if "ultimate" in available and self.hp <= self.fullhp*0.4:
             proba[-1] += 30
         
         move = random.choices(available,proba)[0]
