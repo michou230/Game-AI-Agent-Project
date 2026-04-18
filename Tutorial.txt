@@ -19,10 +19,13 @@ Poison: At the start of each turn, sustain damage. Initially, the damage is 5% o
 
 Do note that these are the basic rules, each character has its own personalized skills and effects thus their own rules to play with.
 
-Characters List provided for this game (10):
-Mydei, Phainon, Blade, The Herta, Sparxie, Dr. Ratio, Hyacine, Acheron, Kafka, Himeko.
+Characters List provided for this game (5):
+Mydei, Blade, Sparxie, Hyacine, Kafka.
 
-Characters skills breakdown:
+Monsters list provided for this game (3):
+
+
+============================================================ CHARACTERS ==================================================================
 
 ========== MYDEI ==========
 
@@ -30,7 +33,7 @@ SPECIAL TRAITS: This character consumes his own hp to inflict damage, heals, can
 
 Normal Attack => "Vow Of Voyage": Inflicts damage based on 25% of his max hp.
 
-Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 35% of his current hp to deal 60% dmg based on his max hp. If his current hp is less than 10%, perform the attack but set his hp to 1.
+Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 35% of his current hp to deal 60% dmg based on his max hp. If his current hp is less than 10% of his max hp, perform the attack but set his hp to 1.
 
 Ultimate => "Throne of Bones": Deal 80% dmg and heal 20% based on his own max hp. If his hp was less than 10% when performing the ultimate, increase the dmg and heal by 100%.
 
@@ -49,7 +52,7 @@ Enhanced Attack: Consumes 25% of his current hp and increases the damage of the 
 
 Ultimate: Set his hp to 50% of his max hp (hp might increase or decrease) and inflict 90% dmg of his max hp.
 
-Talent: Whenever Blade loses hp by being attacked or from his own skills, gain one stack of Charge. When Charge reaches 5, resets to 0 and unleash a Follow-Up ATK dealing 60% dmg and healing 25% hp  based on his max hp.
+Talent: Whenever Blade loses hp by being attacked or from his own abilities, gain one stack of Charge. When Charge reaches 5, resets to 0 and unleash his Follow-Up ATK: "Shuhu's Gift" dealing 60% dmg and healing 25% hp based on his max hp.
 
 ========= SPARXIE ==========
 
@@ -57,14 +60,14 @@ SPECIAL TRAITS: This character consumes skill points to inflict damage based on 
 
 Normal Attack => "Cat Got Your Flametoungue?": inflict 50% dmg of her max atk. Gains 2 Punchline.
 
-Skill => "Boom! Sparxicle's Poppin'": Start the livestream in which sparxie harvests "Engagement Farming" where there is a 40% chance to trigger "Straight Fire" and a 60% chance to trigger "Unreal Banger", you can keep consuming Skill Points to trigger the effects up to 10 times to then unleash the Special Normal Attack "Bloom! Winner Takes All". Each stack increases the final damage by 35%.
+Skill => "Boom! Sparxicle's Poppin'": Start the livestream in which sparxie harvests "Engagement Farming" where there is a 30% chance to trigger "Straight Fire" and a 70% chance to trigger "Unreal Banger", you can keep consuming Skill Points to trigger the effects up to 10 times to then unleash the Special Normal Attack "Bloom! Winner Takes All".
 Straight Fire: gain 2 punchlines and 2 Skill Points
 Unreal Banger: gain 1 punchline
-Special Attack: Unleash a powerful attack based on Sparxie's base atk and the number of skills consumed
+Special Attack: Unleash a powerful attack based on 35% of Sparxie's base atk and the number of skills consumed (up to 10).
 
 Ultimate => "Party's Wildin' and Cameras' Rollin'": Deals 150% of Sparxie's max atk. Gain 5 Punchlines.
 
-Elation Skill => Signal Overflow: The Great Encore!: Every 3 turns unleash a powerful attack based on Sparxie's max ATK and the number of Punchlines accumulated. Each Punchline increases the dmg by 3%.
+Elation Skill => Signal Overflow: The Great Encore!: Every 3 turns unleash a powerful attack based on 100% of Sparxie's max ATK and the number of Punchlines accumulated. Each Punchline increases the dmg by 3%.
 
 ========== HYACINE ==========
 
@@ -75,6 +78,22 @@ Normal Attack => "When Breeze Kisses Cirrus" : inflicts 15% dmg of her max hp.
 Skill => "Love Over The Rainbow": Consumes 1 Skill Point to heal herself 15% hp of her max hp. Summons Little Ica.
 Little Ica: has 50% of Hyacinthia's initial max hp and can perform his Special Attack when enough stacks are provided. If Hyacine's Skill was performed while Ica is on the field, Heals him for the same amount of hp too. Ica will remain on the field when summoned until he dies. While on the field, there is a 60% to target him instead of Hyacine. Cannot be poisoned.
 
-Ultimate => "We Who Fly Into Twilight": Increases max hp by 25% of her own max hp for 3 turns and heals herself for 30% of her initial max hp. Summons Little Ica, perform his Special Attack and gain 3 Stacks. If Little Ica was present on the field when performing this, heals him for the same amount of hp. Little Ica's max Hp is NOT affected.
+Ultimate => "We Who Fly Into Twilight": Increases max hp by 25% of her own max hp for 3 turns and heals herself for 30% of her initial max hp. Summons Little Ica and perform his Special Attack and gain 3 Stacks. If Little Ica was present on the field when performing the Ultimate, heals him for the same amount of hp. Little Ica's max Hp is NOT affected.
 
-Little Ica's Special Attack => "Rainclouds, Time To Go!" : Consume 1 Stack and deals damage to the enemy based on 50% of the accumulated healing tally whenever Hyacine performs a Normal Attack/Skill. Clears 50% of the tally for each Stack consumed.
+Little Ica's Special Attack => "Rainclouds, Time To Go!" : Consume 1 Stack and deals damage to the enemy based on 50% of the accumulated healing tally whenever Hyacine performs a Normal Attack/Skill. Clears 50% of the tally for each time until the tally is less than 1000.
+
+========== KAFKA ==========
+
+SPECIAL TRAITS: This character does damage based on her atk and inflicts DOT (poison) on the enemy and has the ability to trigger it. ([DOT]: Damage Over Time). Can increase her own ATK.
+
+Normal Attack => "Midnight Tumult" : inflicts 25% dmg of her ATK.
+
+Skill => "Caressing Moonlight": Consumes 1 Skill Point to deal 40% of her ATK. If the opponent was poisoned upon unleashing this ability, trigger the DOT.
+
+Ultimate => "Twilight Trill": Deals 90% of ATK and gain 2 Follow-Up Attack instances. If the opponent was poisoned upon unleashing this ability, trigger double the DOT.
+
+Follow-Up Attack => "Gentle but Cruel": Deals 15% of her ATK and increase the Opponent's DOT stat by an additional 2. This ability can be unleashed whenever Kafka performs a Normal Attack or a Skill.
+
+Talent: Whenever this character is attacked, increases her ATK by 2.5% of her original max ATK up to 25%.
+
+============================================================ MONSTERS ==================================================================
