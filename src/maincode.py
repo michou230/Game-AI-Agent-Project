@@ -3,7 +3,7 @@ from Characters import *
 from enemies import *
 import time
 
-char2 = Lieutenant()
+char2 = Sunday()
 
 #MAIN LOOP FOR THE GAME
 
