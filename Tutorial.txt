@@ -3,7 +3,7 @@
 This is a turn based game, thus you get a turn to attack then it is the AI's turn.
 The rules are simple:
 Each character has a Normal Attack (na) , Skill (s) , Ultimate (u) and sometimes a Follow-Up Attack (fua).
-Characters have energy to perform Ultimates and Skill Points to perform a Skill.
+Characters have energy to perform Ultimates and Skill Points to perform a Skill. All characters have HP, Shield, some also have ATK.
 
 Normal Attack: Does low to moderate damage, restores one skill point and some energy.
 
@@ -15,7 +15,9 @@ Follow-Up Attack: A special attack that get triggered when certain conditions ar
 
 Energy is capped at a 100, skill points are capped at 5.
 
-Poison: At the start of each turn, sustain damage. Initially, the damage is 5% of the affected hp.
+Poison: At the start of each turn, sustain damage. Initially, the damage is 5% of the affected hp. Bypasses shield.
+
+Shield: If a character has a shield, when the character takes damage, they will not lose HP and lose shield instead. If the shield is not enough, reduce what is left to their HP.
 
 Do note that these are the basic rules, each character has its own personalized skills and effects thus their own rules to play with.
 
@@ -23,7 +25,7 @@ Characters List provided for this game (5):
 Mydei, Blade, Sparxie, Hyacine, Kafka.
 
 Monsters list provided for this game (3):
-
+Pollux, Silvermane Lieutenant, Harmonic Choir (Sunday).
 
 ============================================================ CHARACTERS ==================================================================
 
@@ -33,9 +35,9 @@ SPECIAL TRAITS: This character consumes his own hp to inflict damage, heals, can
 
 Normal Attack => "Vow Of Voyage": Inflicts damage based on 25% of his max hp.
 
-Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 35% of his current hp to deal 60% dmg based on his max hp. If his current hp is less than 10% of his max hp, perform the attack but set his hp to 1.
+Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 30% of his current hp to deal 40% dmg based on his max hp. If his current hp is less than 10% of his max hp, perform the attack but set his hp to 1.
 
-Ultimate => "Throne of Bones": Deal 80% dmg and heal 20% based on his own max hp. If his hp was less than 10% when performing the ultimate, increase the dmg and heal by 100%.
+Ultimate => "Throne of Bones": Deal 50% dmg and heal 20% based on his own max hp. If his hp was less than 10% when performing the ultimate, increase the dmg and heal by 100%.
 
 Talent => "Blood for Blood": when Mydei is knocked down for the first time in battle, revive him with 30% of his max hp. This effect can only trigger once in battle.
 
