@@ -14,6 +14,10 @@ class Poisoned():
        if self.energy > 100:
          self.energy = 100
 
+    def hpCap(self):
+        if self.hp > self.fullhp:
+            self.hp = self.fullhp
+
 class Mydei(Poisoned):
     def __init__(self, hp = 5000):
         self.name = "Mydei"
@@ -25,15 +29,17 @@ class Mydei(Poisoned):
         self.poisoned = 0
         self.poisoned_dmg = self.fullhp * 0.05
         self.vendetta = 1
+        self.shield = 0
         self.skill_points = 2
         self.energy = 0
     
-    def hpCap(self):
-        if self.hp > self.fullhp:
-            self.hp = self.fullhp
-    
     def takeDamage(self,dmg,opp=None):
-        self.hp -= dmg
+        if self.shield > 0:
+            self.shield -= dmg
+            if self.shield < 0:
+                self.hp += self.shield
+                self.shield = 0
+        else: self.hp -= dmg
         if self.hp <= 0 and self.vendetta == 1:
             self.vendetta = 0
             self.hp = round(self.fullhp*0.3)
@@ -51,12 +57,12 @@ class Mydei(Poisoned):
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
-            dmg = round(self.fullhp*0.6)
+            dmg = round(self.fullhp*0.4)
             if self.hp < round(self.fullhp*0.1):
                 self.hp = 1
                 print(f"[Skill]: {self.skill_name} => -99% HP, {dmg}💥")
             else:
-                self.hp -= round(self.hp*0.35)
+                self.hp -= round(self.hp*0.30)
                 print(f"[Skill]: {self.skill_name} => -35% HP, {dmg}💥")
             opp.takeDamage(dmg,self)
             self.skill_points -= 1
@@ -69,10 +75,10 @@ class Mydei(Poisoned):
     def ultimate(self,opp):
         if self.energy == 100:
             if self.hp <= round(self.fullhp*0.1):
-                dmg = round(self.fullhp*1.6)
+                dmg = round(self.fullhp*1)
                 heal= round(self.fullhp*0.4)
             else:
-                dmg = round(self.fullhp*0.8)
+                dmg = round(self.fullhp*0.5)
                 heal= round(self.fullhp*0.2)
             self.hp += heal
             self.hpCap()
@@ -86,6 +92,7 @@ class Mydei(Poisoned):
     def displayInfo(self):
         print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
         print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
+        print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
         print(15*"-")
 
@@ -101,6 +108,7 @@ class Blade(Poisoned):
         self.counter = 0
         self.stack = 0
         self.poisoned = 0
+        self.shield = 0
         self.hp = hp
         self.fullhp = hp
         self.poisoned_dmg = self.fullhp * 0.05
@@ -112,10 +120,19 @@ class Blade(Poisoned):
             self.hp = self.fullhp
 
     def takeDamage(self,dmg,opp=None):
-        self.hp -= dmg
-        self.stack += 1
-        if self.stack >= 5 and opp is not None:
-            self.followup(opp)
+        if self.shield > 0:
+            self.shield -= dmg
+            if self.shield < 0:
+                self.hp += self.shield
+                self.shield = 0
+                self.stack += 1
+                if self.stack >= 5 and opp is not None:
+                    self.followup(opp)
+        else: 
+            self.hp -= dmg
+            self.stack += 1
+            if self.stack >= 5 and opp is not None:
+                self.followup(opp)
       
     def normalAttack(self,opp):
         if self.hellscape == 0:
@@ -185,6 +202,7 @@ class Blade(Poisoned):
         print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
         print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
         print(f"[FUA-STACKS]: {Fore.LIGHTBLACK_EX}{self.stack}{Style.RESET_ALL}")
+        print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
         print(15*"-")
 
@@ -204,6 +222,7 @@ class Sparxie(Poisoned):
         self.fullatk = atk
         self.atk = atk
         self.turn = 0
+        self.shield = 0
         self.skill_points = 3
         self.energy = 0
     
@@ -218,7 +237,13 @@ class Sparxie(Poisoned):
             self.punchline = 0
     
     def takeDamage(self,dmg,opp=None):
-        self.hp -= dmg
+        if self.shield > 0:
+            self.shield -= dmg
+            if self.shield < 0:
+                self.hp += self.shield
+                self.shield = 0
+        else: self.hp -= dmg
+        
 
     def spCap(self):
         self.skill_points += 1
@@ -262,28 +287,28 @@ class Sparxie(Poisoned):
                 else: 
                     self.punchline += 1
                     print(f"Engagement Farming: {Fore.YELLOW}Unreal Banger{Style.RESET_ALL} triggered!")
-                    pick = 0
-                    while pick == 0:
+                pick = 0
+                while pick == 0:
+                    try:
+                        decision = int(input(f"[SP]: {self.skill_points} -- Consumed SP: ({self.skillCounter}/10)\nConsume more SP (1) or Attack (2)?: "))
+                        pick = 1
+                    except ValueError:
+                        print("please pick a number.")
+                while decision not in [1,2]:
+                    try:
+                        decision = int(input("Please pick a number between 1 (consume SP) or 2 (Attack) only: "))
+                    except ValueError:
+                        print("please pick a number.")
+                while decision == 1:
+                    if self.skill_points == 0 or self.skillCounter == 10:
                         try:
-                            decision = int(input(f"[SP]: {self.skill_points} -- Consumed SP: ({self.skillCounter}/10)\nConsume more SP (1) or Attack (2)?: "))
-                            pick = 1
+                            decision = int(input("Cannot consume any more Skill Points. Pick 2 to Attack: "))
                         except ValueError:
                             print("please pick a number.")
-                    while decision not in [1,2]:
-                        try:
-                            decision = int(input("Please pick a number between 1 (consume SP) or 2 (Attack) only: "))
-                        except ValueError:
-                            print("please pick a number.")
-                    while decision == 1:
-                        if self.skill_points == 0 or self.skillCounter == 10:
-                            try:
-                                decision = int(input("Cannot consume any more Skill Points. Pick 2 to Attack: "))
-                            except ValueError:
-                                print("please pick a number.")
-                        else: break
-                    if decision == 2:
-                        self.normalAttack(opp)
-                        break
+                    else: break
+                if decision == 2:
+                    self.normalAttack(opp)
+                    break
             return 1
         else:
             print("Not enough skill points to unleash Skill! please choose a different move.\n")
@@ -306,6 +331,7 @@ class Sparxie(Poisoned):
         print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{self.atk}{Style.RESET_ALL}")
         print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
         print(f"[PUNCHLINE]: {Fore.LIGHTBLACK_EX}{self.punchline}{Style.RESET_ALL}")
+        print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
         print(15*"-")
 
@@ -325,6 +351,7 @@ class Hyacine(Poisoned):
         self.poisoned = 0
         self.poisoned_dmg = self.fullhp * 0.05
         self.ica_count = 0
+        self.shield = 0
         self.ica_hp = round(self.fullhp*0.5)
         self.ica_attack = "Rainclouds, Time To Go!"
         self.skill_points = 2
@@ -337,21 +364,33 @@ class Hyacine(Poisoned):
             self.ica_hp = self.icafullhp
 
     def takeDamage(self,dmg,opp=None):
-        char = ["hyacine"]
-        weight = [40]
         if self.ica == 1:
+            char = ["hyacine"]
+            weight = [40]
             char.append("ica")
             weight.append(60)
-        attacked = random.choices(char,weight)[0]
-        if attacked == "hyacine":
-            self.hp -= dmg
-            print(f"Hyacine has suffered {dmg}💥")
-        else: 
-            self.ica_hp -= dmg
-            print(f"Little Ica has suffered {dmg}💥")
-            if self.ica_hp <= 0:
-                self.ica = 0
-                print("Ica has left the field.")
+            attacked = random.choices(char,weight)[0]
+            if attacked == "hyacine":
+                if self.shield > 0:
+                    self.shield -= dmg
+                    if self.shield < 0:
+                        self.hp += self.shield
+                        self.shield = 0
+                else: self.hp -= dmg
+                print(f"Hyacine has suffered {dmg}💥")
+            else: 
+                self.ica_hp -= dmg
+                print(f"Little Ica has suffered {dmg}💥")
+                if self.ica_hp <= 0:
+                    self.ica = 0
+                    print("Ica has left the field.")
+        else:
+            if self.shield > 0:
+                    self.shield -= dmg
+                    if self.shield < 0:
+                        self.hp += self.shield
+                        self.shield = 0
+            else: self.hp -= dmg
             
         
     def icaDamage(self):
@@ -385,7 +424,7 @@ class Hyacine(Poisoned):
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
-            heal = round(self.fullhp*15/100)
+            heal = round(self.fullhp*0.15)
             self.hp += heal
             self.hpCap()
             self.skill_points -= 1
@@ -418,7 +457,7 @@ class Hyacine(Poisoned):
     #Ultimate class: changed text output
     def ultimate(self,opp):
         if self.energy == 100:
-            heal= round(self.fullhp*30/100)
+            heal= round(self.fullhp*0.3)
             self.fullhp += self.fullhpbuff
             self.hp += heal
             self.hpCap()
@@ -454,6 +493,7 @@ class Hyacine(Poisoned):
             print(f"[PET]: Little Ica")
             print(f"[HP]: {Fore.GREEN}{round(self.ica_hp)}{Style.RESET_ALL}")
             print(f"[Ica-SPECIAL ATK]: {Fore.LIGHTBLACK_EX}{self.ica_count}{Style.RESET_ALL}")
+        print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
         print(15*"-")
 
@@ -470,11 +510,17 @@ class Kafka(Poisoned):
         self.poisoned_dmg = self.fullhp * 0.05
         self.atk = atk
         self.fullatk = atk
+        self.shield = 0
         self.skill_points = 2
         self.energy = 0
 
     def takeDamage(self,dmg,opp=None):
-        self.hp -= dmg
+        if self.shield > 0:
+            self.shield -= dmg
+            if self.shield < 0:
+                self.hp += self.shield
+                self.shield = 0
+        else: self.hp -= dmg
         if self.atk < self.fullatk + self.fullatk * 0.25:
             self.atk += self.fullatk * 0.025
             print(f"+{round(self.fullatk * 0.025)} ATK")
@@ -507,7 +553,7 @@ class Kafka(Poisoned):
             print(f"[Skill]: {self.skill_name} => {dmg}💥")
             opp.takeDamage(dmg,self)
             if opp.poisoned >= 1:
-                opp.hp -= round(opp.poisoned_dmg)
+                opp.takeDamage(round(opp.poisoned_dmg),self)
                 print(f"[DOT] => {round(opp.poisoned_dmg)}💥")
             if self.fua_counter >= 1:
                 self.followup(opp)
@@ -526,7 +572,7 @@ class Kafka(Poisoned):
             opp.takeDamage(dmg,self)
             self.fua_counter += 2
             if opp.poisoned >= 1:
-                opp.hp -= round(opp.poisoned_dmg*2)
+                opp.takeDamage(round(opp.poisoned_dmg*2),self)
                 print(f"[DOT] => {round(opp.poisoned_dmg*2)}💥")
             return 1
         else:
@@ -537,5 +583,6 @@ class Kafka(Poisoned):
         print(f"[PLAYER]: {self.name} | [HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
         print(f"[SP]: {Fore.YELLOW}{self.skill_points}{Style.RESET_ALL} | [E]: {Fore.BLUE}{self.energy}{Style.RESET_ALL}")
         print(f"[FUA]: {Fore.LIGHTBLACK_EX}{self.fua_counter}{Style.RESET_ALL}")
+        print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}\n")
         print(15*"-")
