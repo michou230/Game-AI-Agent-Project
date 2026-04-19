@@ -109,16 +109,16 @@ class AI(Character):
         proba = []
 
         available.append("normal")
-        proba.append(30)
+        proba.append(20)
 
         if self.skill_points > 0:
             available.append("skill")
-            proba.append(60)
+            proba.append(30)
         if self.energy >= 100:
             available.append("ultimate")
-            proba.append(70)
-        if "ultimate" in available and self.hp <= self.fullhp*0.4:
-            proba[-1] += 30
+            proba.append(50)
+            if self.hp <= self.fullhp*0.4:
+                proba[-1] += 100
         
         move = random.choices(available,proba)[0]
 
