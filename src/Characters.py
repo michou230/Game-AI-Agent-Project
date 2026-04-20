@@ -62,8 +62,8 @@ class Mydei(Poisoned):
                 self.hp = 1
                 print(f"[Skill]: {self.skill_name} => -99% HP, {dmg}💥")
             else:
-                self.hp -= round(self.hp*0.30)
-                print(f"[Skill]: {self.skill_name} => -35% HP, {dmg}💥")
+                self.hp -= round(self.hp*0.3)
+                print(f"[Skill]: {self.skill_name} => -30% HP, {dmg}💥")
             opp.takeDamage(dmg,self)
             self.skill_points -= 1
             self.energyCap(35)
