@@ -15,7 +15,7 @@ Follow-Up Attack: A special attack that get triggered when certain conditions ar
 
 Energy is capped at a 100, skill points are capped at 5.
 
-Poison: At the start of each turn, sustain damage. Initially, the damage is 5% of the affected hp. Bypasses shield.
+DOT (Damage Over Time) or Poison: At the start of each turn, sustain damage. Initially, the damage is 5% of the affected hp. Bypasses shield.
 
 Shield: If a character has a shield, when the character takes damage, they will not lose HP and lose shield instead. If the shield is not enough, reduce what is left to their HP.
 
@@ -33,6 +33,8 @@ Pollux, Silvermane Lieutenant, Harmonic Choir (Sunday).
 
 SPECIAL TRAITS: This character consumes his own hp to inflict damage, heals, can be revived.
 
+STATS: 5000 HP 
+
 Normal Attack => "Vow Of Voyage": Inflicts damage based on 25% of his max hp.
 
 Skill => "Deaths are Legion, Regrets are None": Consumes one skill point and 30% of his current hp to deal 40% dmg based on his max hp. If his current hp is less than 10% of his max hp, perform the attack but set his hp to 1.
@@ -45,6 +47,8 @@ Talent => "Blood for Blood": when Mydei is knocked down for the first time in ba
 ========== BLADE ==========
 
 SPECIAL TRAITS: This character consumes his own hp to inflict damage, heals.
+
+STATS: 5000 HP 
 
 Normal Attack => "Shard Sword": Inflicts damage based on 25% of his max hp.
 
@@ -60,6 +64,8 @@ Talent: Whenever Blade loses hp by being attacked or from his own abilities, gai
 
 SPECIAL TRAITS: This character consumes skill points to inflict damage based on her ATK. Increases the cap of Skill Points when using Sparxie to 8.
 
+STATS: 5000 HP | 1500 ATK
+
 Normal Attack => "Cat Got Your Flametoungue?": inflict 50% dmg of her max atk. Gains 2 Punchline.
 
 Skill => "Boom! Sparxicle's Poppin'": Start the livestream in which sparxie harvests "Engagement Farming" where there is a 30% chance to trigger "Straight Fire" and a 70% chance to trigger "Unreal Banger", you can keep consuming Skill Points to trigger the effects up to 10 times to then unleash the Special Normal Attack "Bloom! Winner Takes All".
@@ -69,11 +75,13 @@ Special Attack: Unleash a powerful attack based on 35% of Sparxie's base atk and
 
 Ultimate => "Party's Wildin' and Cameras' Rollin'": Deals 150% of Sparxie's max atk. Gain 5 Punchlines.
 
-Elation Skill => Signal Overflow: The Great Encore!: Every 3 turns unleash a powerful attack based on 100% of Sparxie's max ATK and the number of Punchlines accumulated. Each Punchline increases the dmg by 3%.
+Elation Skill => Signal Overflow: The Great Encore!: Every 3 turns unleash a powerful attack based on 100% of Sparxie's max ATK and the number of Punchlines accumulated. Each Punchline increases the dmg by 3%. Bypasses shield.
 
 ========== HYACINE ==========
 
 SPECIAL TRAITS: This character heals, does damage based on her max hp and summons her pet Little Ica who deals dmg based on the accumulated healing tally. She can increase her max hp.
+
+STATS: 5500 HP 
 
 Normal Attack => "When Breeze Kisses Cirrus" : inflicts 15% dmg of her max hp.
 
@@ -86,7 +94,9 @@ Little Ica's Special Attack => "Rainclouds, Time To Go!" : Consume 1 Stack and d
 
 ========== KAFKA ==========
 
-SPECIAL TRAITS: This character does damage based on her atk and inflicts DOT (poison) on the enemy and has the ability to trigger it. ([DOT]: Damage Over Time). Can increase her own ATK.
+SPECIAL TRAITS: This character does damage based on her atk and inflicts DOT (poison) on the enemy and has the ability to trigger it. Can increase her own ATK.
+
+STATS: 4500 HP | 2000 ATK
 
 Normal Attack => "Midnight Tumult" : inflicts 25% dmg of her ATK.
 
@@ -99,3 +109,55 @@ Follow-Up Attack => "Gentle but Cruel": Deals 15% of her ATK and increase the Op
 Talent: Whenever this character is attacked, increases her ATK by 2.5% of her original max ATK up to 25%.
 
 ============================================================ MONSTERS ==================================================================
+
+========== POLLUX ==========
+
+SPECIAL TRAITS: This enemy does damage based on their HP and inflicts DOT (Poison).
+
+STATS: 20000 HP 
+
+Normal Attack => "To Stay the Fallen" : inflicts 3% dmg of their max HP.
+
+Skill => "To Die in Aromatic Pain": Steals 15% of your current HP. If your current HP is < than 500 reduce it to 1.
+
+Ultimate => "To Bury the Slumbered": Poisons you for 2 turns and restore 10% of their max HP.
+
+========== SILVERMANE LIEUTENANT ==========
+
+SPECIAL TRAITS: This enemy does damage based on their ATK and reflect damage.
+
+STATS: 10000 HP | 1300 ATK
+
+Normal Attack => "Assault": Inflicts 30% dmg of their ATK.
+
+Skill => "Pierce": Inflicts 70% dmg of their ATK and gains double it as shield.
+
+Ultimate => "Shield Reflect": Activates "Shield Reflect" for 3 turns.
+
+Shield Reflect: Reduces damage received by 50% and launches a counter attack that deals 20% of their ATK.
+
+========== HARMONIC CHOIR (SUNDAY) ==========
+
+SPECIAL TRAITS: This enemy has two phases and inflicts dmg based on their ATK.
+
+STATS: STATS: 13000 HP | 1500 ATK
+
+PHASE 1:
+
+Normal Attack => "Maestoso": Inflicts 20% dmg of their ATK.
+
+Skill => "Tempestoso": Inflicts 50% dmg of their ATK.
+
+Ultimate => "Come Un Sogno": Summons 2 Echoes. If Echoes are already summoned, restores the Echoes HP to max.
+
+Echoes: They have 1000 HP. Each Echo present on the field increases Sunday's ATK by 10%. When attacking, there is an 80% chance to attack them instead of Sunday, and each defeated Echo restores 1000 HP to Sunday and 500 to the Player. If Sunday was attacked while there are any Echos on the field, defeat them instantly.
+
+PHASE 2:
+
+Upon defeating the first phase, restore 1500 HP to the player. Sunday enters "Embryo of Philosophy" state. If he was poisoned, clear it.
+
+STATS: 20000 HP | 1500 ATK
+
+Embryo of Philosophy: Reduces damage received by 70% and the Player gains a shield based on 50% of the initial damage they caused.
+
+Special Attack => "Im Anfang war die Tat": After 7 turns, unleash a very powerful attack based on 500% of their ATK.
