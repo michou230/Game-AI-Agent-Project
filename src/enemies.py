@@ -20,7 +20,7 @@ class Pollux(AI):
         
     #Normal Aattck class: changed text output
     def normalAttack(self,opp):
-        dmg = round(self.fullhp*0.01)
+        dmg = round(self.fullhp*0.03)
         print(f"{self.name} [Normal Attack]: {self.na_name}=> {dmg}💥")
         opp.takeDamage(dmg,self)
         self.skill_points += 1
@@ -30,7 +30,10 @@ class Pollux(AI):
     #Skill class: changed text output
     def skill(self,opp):
         if self.skill_points > 0:
-            dmg = round(self.fullhp*0.05)
+            if opp.hp < 500:
+                dmg = opp.hp - 1
+            else:
+                dmg = round(opp.hp*0.15)
             self.hp += round(dmg)
             print(f"{self.name} [Skill]: {self.skill_name} => Stole ➕{dmg}.")
             opp.takeDamage(dmg,self)
@@ -54,7 +57,7 @@ class Pollux(AI):
          print(15*"-")
 
 class Lieutenant(AI):
-    def __init__(self, hp = 10000, atk = 1000):
+    def __init__(self, hp = 10000, atk = 1300):
         self.hp = hp
         self.atk = atk
         self.name = "Silvermane Lieutenant"
@@ -64,6 +67,7 @@ class Lieutenant(AI):
         self.fullhp = hp
         self.poisoned = 0
         self.reflection = 0
+        self.shield = 0
         self.poisoned_dmg = self.fullhp * 0.05
         self.skill_points = 2
         self.energy = 0
@@ -82,7 +86,8 @@ class Lieutenant(AI):
     def skill(self,opp):
         if self.skill_points > 0:
             dmg = round(self.atk*0.7)
-            print(f"{self.name} [Skill]: {self.skill_name}=> {dmg}💥")
+            shield += dmg*2
+            print(f"{self.name} [Skill]: {self.skill_name}=> {dmg}💥, 🛡️ {shield}")
             opp.takeDamage(dmg,self)
             self.skill_points -= 1
             self.energy += 50
@@ -98,20 +103,27 @@ class Lieutenant(AI):
         self.hp -= dmg
         if self.reflection >= 1:
             self.reflection -= 1
-            self.hp += round(dmg*0.20)
-            atk = round(self.atk*0.20)
-            print(f"{Fore.LIGHTBLACK_EX}[Shield Reflection]{Style.RESET_ALL} => {atk}💥, ➕ {round(dmg*0.2)}")
+            reduction = round(dmg*0.5)
+            if self.shield > 0:
+                self.shield -= reduction
+                if self.shield < 0:
+                    self.hp += self.shield
+                    self.shield = 0
+            else: self.hp -= reduction
+            atk = round(self.atk*0.2)
+            print(f"{Fore.LIGHTBLACK_EX}[Shield Reflection]{Style.RESET_ALL} => Resisted {reduction} DMG!, caused {atk}💥")
             opp.takeDamage(atk,self)
 
     def displayInfo(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
          print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
+         print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
          print(f"[SHIELD REFLECTION]: {Fore.LIGHTBLACK_EX}{self.reflection}{Style.RESET_ALL}")
          print(15*"-")
             
 
 class Sunday(AI):
-    def __init__(self, hp = 10000, atk = 1500):
+    def __init__(self, hp = 13000, atk = 1500):
         self.hp = hp
         self.atk = atk
         self.fullatk = atk
@@ -165,7 +177,7 @@ class Sunday(AI):
                     print("On the Seventh day, grant Dignity.. About to witness Im Anfang war die Tat!")
                     self.count += 1
                 case 8:
-                    dmg = self.atk * 4
+                    dmg = self.atk * 5
                     print(f"{self.name} [Ultimate]: {self.p3_ultimate_name} => {dmg}💥")
                     opp.takeDamage(dmg,self)
                     self.count = 1
@@ -180,41 +192,40 @@ class Sunday(AI):
             print(f"{self.name} [Skill]: {self.p2_skill_name}=> {dmg}💥")
             opp.takeDamage(dmg,self)
             self.skill_points -= 1
-            self.energy += 50
+            self.energy += 45
             
     #Ultimate class: changed text output
     def ultimate(self,opp):
         if self.energy >= 100:
             self.energy -= 100
-        if self.phase == 0:
-                print(f"{self.name} [Ultimate]: {self.p2_ultimate_name} and summoned his Echoes!")
-                if self.Echoes == 0:
-                    self.Echoes = 1
+            print(f"{self.name} [Ultimate]: {self.p2_ultimate_name} and summoned his Echoes!")
+            if self.Echoes == 0:
+                self.Echoes = 1
+                self.echo1hp = self.echofullhp
+                self.echo2hp = self.echofullhp
+                self.atk += round(self.fullatk*0.2)
+            else:
+                if self.echo1hp <= 0:
                     self.echo1hp = self.echofullhp
+                    self.atk += round(self.fullatk*0.1)
+                else: self.echo1hp = self.echofullhp
+                if self.echo2hp <= 0:
                     self.echo2hp = self.echofullhp
-                    self.atk += round(self.fullatk*0.2)
-                else:
-                    if self.echo1hp <= 0:
-                        self.echo1hp = self.echofullhp
-                        self.atk += round(self.fullatk*0.1)
-                    else: self.echo1hp = self.echofullhp
-                    if self.echo2hp <= 0:
-                        self.echo2hp = self.echofullhp
-                        self.atk += round(self.fullatk*0.1)
-                    else: self.echo2hp = self.echofullhp
+                    self.atk += round(self.fullatk*0.1)
+                else: self.echo2hp = self.echofullhp
                     
 
     def takeDamage(self,dmg,opp):
         if self.phase == 0:
             if self.Echoes == 1:
                 char = ["sunday"]
-                weight = [10]
+                weight = [20]
                 if self.echo1hp > 0:
                     char.append("echo1")
-                    weight.append(45)
+                    weight.append(40)
                 if self.echo2hp > 0:
                     char.append("echo2")
-                    weight.append(45)
+                    weight.append(40)
                 attacked = random.choices(char,weight)[0]
                 if attacked == "echo1":
                     self.echo1hp -= dmg
@@ -222,9 +233,11 @@ class Sunday(AI):
                     if self.echo1hp < 0:
                         weight.pop()
                         char.remove("echo1")
-                        opp.hp += 1000
+                        self.hp += 1000
+                        opp.hp += 500
                         opp.hpCap()
                         print("[ECHO 1]: Left the field. ➕1000")
+                        print("You ➕500")
                         self.atk -= round(self.fullatk*0.1)
                         if self.echo2hp <= 0:
                             self.Echoes = 0     
@@ -234,9 +247,11 @@ class Sunday(AI):
                     if self.echo2hp < 0:
                         weight.pop()
                         char.remove("echo2")
-                        opp.hp += 1000
+                        self.hp += 1000
+                        opp.hp += 500
                         opp.hpCap()
                         print("[ECHO 2]: Left the field. ➕1000")
+                        print("You ➕500")
                         self.atk -= round(self.fullatk*0.1)
                         if self.echo1hp <= 0:
                             self.Echoes = 0  
@@ -248,18 +263,22 @@ class Sunday(AI):
                     self.echo2hp = 0
                     if "echo1" in char:
                         char.remove("echo1")
-                        print("[ECHO 1]: Left the field.")
+                        print("[ECHO 1]: Left the field. ➕1000")
+                        print("You ➕500")
                         self.atk -= round(self.fullatk*0.1)
-                        opp.hp += 1000
+                        self.hp += 1000
+                        opp.hp += 500
                         opp.hpCap()
                     if "echo2" in char:
                         char.remove("echo2")
-                        print("[ECHO 2]: Left the field.")
+                        print("[ECHO 2]: Left the field. ➕1000")
+                        print("You ➕500")
                         self.atk -= round(self.fullatk*0.1)
-                        opp.hp += 1000
+                        self.hp += 1000
+                        opp.hp += 500
                         opp.hpCap() 
                     for w in weight:
-                        if w == 80:
+                        if w == 40:
                             weight.remove(w)
             else: 
                 self.hp -= dmg
