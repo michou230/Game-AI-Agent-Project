@@ -13,7 +13,7 @@ tab = ["Mydei","Sparxie","Hyacine","Blade","Kafka"]
 while p == 0:
     while c == 0:
         try:
-            player = int(input("Please pick character corresponding to the numbers:\n[0].Random | [1].Mydei | [2].Sparxie | [3].Blade | [4].Kafka | [5].Hyacine\nChoose a number: "))
+            player = int(input("\nPlease pick character corresponding to the numbers:\n[0].Random | [1].Mydei | [2].Sparxie | [3].Blade | [4].Kafka | [5].Hyacine\nChoose a number: "))
             c = 1
         except ValueError:
             print("please pick a number.")
@@ -109,7 +109,7 @@ while p1.hp > 0 and char2.hp > 0:
         print(f"Game Over! {char2.name} won! player {p1.name} lost!")
         break
     elif char2.hp <= 0:
-        print(f"Game Over! {p1.name} won! player {char2.name} lost!")
+        print(f"Game Over! {p1.name} won! opponent {char2.name} lost!")
         break
 
 
