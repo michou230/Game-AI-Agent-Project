@@ -130,7 +130,7 @@ STATS: 10000 HP | 1300 ATK
 
 Normal Attack => "Assault": Inflicts 30% dmg of their ATK.
 
-Skill => "Pierce": Inflicts 70% dmg of their ATK and gains double it as shield.
+Skill => "Pierce": Inflicts 70% dmg of their ATK and gains it as shield.
 
 Ultimate => "Shield Reflect": Activates "Shield Reflect" for 3 turns.
 
