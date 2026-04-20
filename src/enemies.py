@@ -2,6 +2,21 @@ from trial import AI
 from colorama import Fore, Style, init
 import random
 import time
+from playsound import playsound
+import sys
+from pathlib import Path
+from playsound import playsound
+
+base = Path(__file__).resolve().parent
+audio = base.parent / "data" / "assets" / "AudioCutter_sundayyy.mp3"
+
+
+def slow(text):
+    for c in text:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    print()
 
 init()
 class Pollux(AI):
@@ -123,7 +138,7 @@ class Lieutenant(AI):
             
 
 class Sunday(AI):
-    def __init__(self, hp = 13000, atk = 1500):
+    def __init__(self, hp = 10000, atk = 1500):
         self.hp = hp
         self.atk = atk
         self.fullatk = atk
@@ -280,21 +295,44 @@ class Sunday(AI):
                     for w in weight:
                         if w == 40:
                             weight.remove(w)
+                    if self.hp <= 0:
+                        self.poisoned = 0
+                        time.sleep(1)
+                        playsound(str(audio), block = False)
+                        time.sleep(2.7)
+                        slow("\nAll the work of creation has been completed..")
+                        time.sleep(197)
+                        slow("The inevitable day has arrived..")
+                        time.sleep(2)
+                        slow("The Embryo of Philosophy..")
+                        time.sleep(1.5)
+                        slow("WILL RESHAPE FOR US ALL OF REALITY!\n")
+                        self.phase = 1
+                        self.hp = 20000
+                        time.sleep(4)
+                        print("The boss has transformed to its second phase!\n")
+                        opp.hp += 1500
+                        opp.hpCap()
+                        print("➕ 1500")
+                        self.energy = 0
+                        self.skill_points = 0 
             else: 
                 self.hp -= dmg
                 if self.hp <= 0:
                     self.poisoned = 0
-                    time.sleep(3)
-                    print("\nAll the work of creation has been completed..")
-                    time.sleep(3)
-                    print("The inevitable day has arrived..")
-                    time.sleep(3)
-                    print("The Embryo of Philosophy..")
-                    time.sleep(3)
-                    print("WILL RESHAPE FOR US ALL OF REALITY!\n")
+                    time.sleep(1)
+                    playsound(str(audio), block = False)
+                    time.sleep(2.7)
+                    slow("\nAll the work of creation has been completed..")
+                    time.sleep(1.97)
+                    slow("The inevitable day has arrived..")
+                    time.sleep(2)
+                    slow("The Embryo of Philosophy..")
+                    time.sleep(1.5)
+                    slow("WILL RESHAPE FOR US ALL OF REALITY!\n")
                     self.phase = 1
                     self.hp = 20000
-                    time.sleep(2)
+                    time.sleep(4)
                     print("The boss has transformed to its second phase!\n")
                     opp.hp += 1500
                     opp.hpCap()
