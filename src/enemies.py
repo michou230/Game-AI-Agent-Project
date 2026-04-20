@@ -101,8 +101,8 @@ class Lieutenant(AI):
     def skill(self,opp):
         if self.skill_points > 0:
             dmg = round(self.atk*0.7)
-            shield += dmg*2
-            print(f"{self.name} [Skill]: {self.skill_name}=> {dmg}💥, 🛡️ {shield}")
+            self.shield += dmg
+            print(f"{self.name} [Skill]: {self.skill_name}=> {dmg}💥, 🛡️ {dmg}")
             opp.takeDamage(dmg,self)
             self.skill_points -= 1
             self.energy += 50
