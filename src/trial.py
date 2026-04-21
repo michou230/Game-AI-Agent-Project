@@ -61,10 +61,14 @@ class AI(Character):
         self.poisoned_dmg = self.fullhp*0.05
         pass
 
-    def Poison(self):
+    def Poison(self,opp):
         self.poisoned -= 1
         self.hp -= self.poisoned_dmg
         print(f"[POISON] => {Fore.MAGENTA}{round(self.poisoned_dmg)}{Style.RESET_ALL}💥")
+        if self.name == "Harmonic Choir":
+                if self.hp <= 0:
+                    self.Echos = 0
+                    self.takeDamage(self.poisoned_dmg,opp)
         
     #Normal Aattck class: changed text output
     def normalAttack(self,opp):
