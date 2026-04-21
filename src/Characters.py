@@ -233,8 +233,13 @@ class Sparxie(Poisoned):
             dmg = round(self.atk + (self.punchline*0.03*self.atk))
             self.energyCap(25)
             print(f"[Elation Skill]: Signal Overflow: The Great Encore! => {dmg}💥 through {self.punchline} Punchlines!")
-            opp.hp -= dmg
             self.punchline = 0
+            opp.hp -= dmg
+            if opp.name == "Harmonic Choir":
+                if opp.hp <= 0:
+                    self.Echos = 0
+                    opp.takeDamage(dmg,self)
+            
     
     def takeDamage(self,dmg,opp=None):
         if self.shield > 0:
@@ -553,8 +558,8 @@ class Kafka(Poisoned):
             print(f"[Skill]: {self.skill_name} => {dmg}💥")
             opp.takeDamage(dmg,self)
             if opp.poisoned >= 1:
-                opp.takeDamage(round(opp.poisoned_dmg),self)
                 print(f"[DOT] => {round(opp.poisoned_dmg)}💥")
+                opp.takeDamage(round(opp.poisoned_dmg),self)
             if self.fua_counter >= 1:
                 self.followup(opp)
             return 1
