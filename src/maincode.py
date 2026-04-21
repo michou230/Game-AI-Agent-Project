@@ -144,7 +144,7 @@ while p1.hp > 0 and p2.hp > 0:
     
     if player_move == 1 and p2.hp > 0:
         if p2.poisoned >= 1:
-            p2.Poison()
+            p2.Poison(p1)
         print("\nOpponent thinking. . .\n")
         time.sleep(2)
         p2.ai_move(p1)
