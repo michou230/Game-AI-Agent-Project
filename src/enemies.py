@@ -245,7 +245,7 @@ class Sunday(AI):
                 if attacked == "echo1":
                     self.echo1hp -= dmg
                     print(f"[ECHO 1] took the damage!")
-                    if self.echo1hp < 0:
+                    if self.echo1hp <= 0:
                         weight.pop()
                         char.remove("echo1")
                         self.hp += 1000
@@ -259,7 +259,7 @@ class Sunday(AI):
                 elif attacked == "echo2": 
                     self.echo2hp -= dmg
                     print((f"[ECHO 2] took the damage!"))
-                    if self.echo2hp < 0:
+                    if self.echo2hp <= 0:
                         weight.pop()
                         char.remove("echo2")
                         self.hp += 1000
@@ -346,7 +346,6 @@ class Sunday(AI):
             opp.shield += shield
             print(f"[Embryo of Philosophy]: Reduced damage taken to {reduction}💥, 🛡️ {shield}")
             print(f"[SHIELD]: accumulated {opp.shield}")
-
 
     def displayInfo(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
