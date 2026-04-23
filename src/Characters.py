@@ -1,5 +1,26 @@
 import random
 from colorama import Fore, Style, init
+import sys
+import time
+from pathlib import Path
+from playsound import playsound
+
+base = Path(__file__).resolve().parent
+kafka_fua = base.parent / "data" / "assets" / ".mp3"
+mydei = base.parent / "data" / "assets" / ".mp3"
+blade_ult = base.parent / "data" / "assets" / ".mp3"
+blade_fua = base.parent / "data" / "assets" / ".mp3"
+sparxie = base.parent / "data" / "assets" / ".mp3"
+hyacine = base.parent / "data" / "assets" / ".mp3"
+kafka_ult = base.parent / "data" / "assets" / ".mp3"
+
+def slow(text):
+    for c in text:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    print()
+
 
 init()
 class Poisoned():
@@ -83,6 +104,8 @@ class Mydei(Poisoned):
             self.hp += heal
             self.hpCap()
             self.energy -= 100
+            playsound(str(mydei), block = False)
+            slow("Now accept your punishment!")
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥, ➕{heal}")
             opp.takeDamage(dmg,self)
             return 1
@@ -162,6 +185,8 @@ class Blade(Poisoned):
         self.hpCap()
         self.energyCap(25)
         opp.takeDamage(dmg,self)
+        playsound(str(blade_fua), block = False)
+        slow("A vale to send you!")
         print(f"[Follow-up ATK]: Shuhu's Gift => {dmg}💥, ➕{heal}")
         self.stack = 0
     
@@ -189,6 +214,8 @@ class Blade(Poisoned):
             self.hp = round(self.fullhp*0.5)
             dmg = round(self.fullhp*0.9)
             self.energy -= 100
+            playsound(str(blade_ult), block = False)
+            slow("Savor it for me!")
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
             opp.takeDamage(dmg,self)
             if self.stack >= 5:
@@ -325,6 +352,8 @@ class Sparxie(Poisoned):
             dmg = round(self.atk*1.5)
             self.punchline += 5
             self.energy -= 100
+            playsound(str(sparxie), block = False)
+            slow("Party 'till the end of the world!")
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
             opp.takeDamage(dmg,self)
             return 1
@@ -467,6 +496,8 @@ class Hyacine(Poisoned):
             self.hp += heal
             self.hpCap()
             self.heal += heal
+            playsound(str(hyacine), block = False)
+            slow("Dispel the gloom, restore the skies!")
             print(f"[Ultimate]: {self.ultimate_name} => ➕{heal}, new max [HP] => {self.fullhp}")
             self.fullhp_count = 3
             if self.ica == 0:
@@ -546,6 +577,8 @@ class Kafka(Poisoned):
         dmg = round(self.atk*0.15)
         opp.poisoned += 2
         self.energyCap(25)
+        playsound(str(kafka_fua), block = False)
+        slow("Stand still")
         print(f"[Follow-up ATK]: Gentle but Cruel => {dmg}💥\nIncreased opponent's poisoned state to {opp.poisoned}")
         opp.takeDamage(dmg,self)
     
@@ -573,6 +606,8 @@ class Kafka(Poisoned):
         if self.energy == 100:
             dmg = round(self.atk*90/100)
             self.energy -= 100
+            playsound(str(kafka_ult), block = False)
+            slow("Time to say bye. BOOM.")
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
             opp.takeDamage(dmg,self)
             self.fua_counter += 2
