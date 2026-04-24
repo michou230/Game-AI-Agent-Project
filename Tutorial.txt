@@ -1,6 +1,7 @@
                                                  ===================GAMEPLAY RULES AND TUTORIAL====================
 
-This is a turn based game, thus you get a turn to attack then it is the AI's turn.
+This is a turn based game, thus you get a turn to attack then it is the Enemy's turn.
+
 The rules are simple:
 Each character has a Normal Attack (na) , Skill (s) , Ultimate (u) and sometimes a Follow-Up Attack (fua).
 Characters have energy to perform Ultimates and Skill Points to perform a Skill. All characters have HP, Shield, some also have ATK.
@@ -15,9 +16,11 @@ Follow-Up Attack: A special attack that get triggered when certain conditions ar
 
 Energy is capped at a 100, skill points are capped at 5.
 
-DOT (Damage Over Time) or Poison: At the start of each turn, sustain damage. Initially, the damage is 5% of the affected hp. Bypasses shield.
+DOT (Damage Over Time) or Poison: At the start of each turn, sustain damage. The damage is 5% of the affected max hp. Bypasses shield.
 
 Shield: If a character has a shield, when the character takes damage, they will not lose HP and lose shield instead. If the shield is not enough, reduce what is left to their HP.
+
+Enemies: Have the same mechanics.  Enemies do NOT have skill points/energy restriction. When their hp falls under 40%, increase the chance to perform an ultimate by 25%.
 
 Do note that these are the basic rules, each character has its own personalized skills and effects thus their own rules to play with.
 
