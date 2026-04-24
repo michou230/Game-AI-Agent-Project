@@ -1,6 +1,7 @@
 import random
 from colorama import Fore, Style, init
 
+#THIS FILE ONLY HOLDS THE BASIC CHARACTER/AI MOVES WHICH IS THE BASE IDEA OF THE GAMEPLAY.
 init()
 class Character:
     #initialization
@@ -16,7 +17,7 @@ class Character:
         pass
 
     #Normal Attack method
-    def normalAttack(self,ai):
+    def normal_attack(self,ai):
         ai.hp -= 10
         self.skill_points += 1
         self.energy += 15
@@ -61,19 +62,19 @@ class AI(Character):
         self.poisoned_dmg = self.fullhp*0.05
         pass
 
-    def Poison(self,opp):
+    def poison(self,opp):
         self.poisoned -= 1
         self.hp -= self.poisoned_dmg
         print(f"[POISON] => {Fore.MAGENTA}{round(self.poisoned_dmg)}{Style.RESET_ALL}💥")
         if self.name == "Harmonic Choir":
                 if self.hp <= 0:
                     self.Echos = 0
-                    self.takeDamage(self.poisoned_dmg,opp)
+                    self.take_damage(self.poisoned_dmg,opp)
         
-    #Normal Aattck class: changed text output
-    def normalAttack(self,opp):
+    #Normal Attack class: changed text output
+    def normal_attack(self,opp):
         print(f"{self.name} unleashed their Normal Attack: {self.na_name} and caused 10 dmg!")
-        opp.takeDamage(self.atk*0.2,self)
+        opp.take_damage(self.atk*0.2,self)
         self.skill_points += 1
         self.energy += 15
         
@@ -84,14 +85,14 @@ class AI(Character):
             if opp.name == "Mydei":
                 opp.hp -= self.atk * 0.6
             else:
-                opp.takeDamage(self.atk * 0.6,self)
+                opp.take_damage(self.atk * 0.6,self)
             self.skill_points -= 1
             self.energy += 30
             if opp.hp >= 0:
                 print(f"{self.name} unleashed their Skill: {self.skill_name} and caused 15 dmg! Your hp is now: {opp.hp}")
             else: 
                 print(f"{self.name} unleashed their Skill:  {self.skill_name} and caused 15 dmg! Your hp is now: 0")
-                opp.takeDamage(300)
+                opp.take_damage(300)
             
     #Ultimate class: changed text output
     def ultimate(self,opp):
@@ -99,13 +100,13 @@ class AI(Character):
             if opp.name == "Mydei":
                 opp.hp -= 300
             else:
-                opp.takeDamage(300,self)
+                opp.take_damage(300,self)
             self.energy -= 100
             if opp.hp >= 0:
                 print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! Your hp is now: {opp.hp}")
             else: 
                 print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! Your hp is now: 0")
-                opp.takeDamage(300)
+                opp.take_damage(300)
 
     #AI random move based on available resources
     def ai_move(self,opponent):
@@ -127,7 +128,7 @@ class AI(Character):
         move = random.choices(available,proba)[0]
 
         if move == "normal":
-            self.normalAttack(opponent)
+            self.normal_attack(opponent)
         elif move == "skill":
             self.skill(opponent)
         elif move == "ultimate":

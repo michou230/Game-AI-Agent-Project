@@ -1,16 +1,16 @@
-from trial import AI
-from colorama import Fore, Style, init
 import random
 import time
-from playsound import playsound
 import sys
 from pathlib import Path
 from playsound import playsound
+from colorama import Fore, Style, init
+from trial import AI
 
+#Voicelines path
 base = Path(__file__).resolve().parent
 audio = base.parent / "data" / "assets" / "AudioCutter_sundayyy.mp3"
 
-
+#method to type slowly
 def slow(text):
     for c in text:
         sys.stdout.write(c)
@@ -18,7 +18,19 @@ def slow(text):
         time.sleep(0.05)
     print()
 
+#initializing colorama
 init()
+
+"""
+Each enemy has 5 methods that are the same:
+    -take_damage() to take damage
+    -normal_attack() to perform a normal attack
+    -skill() to perform a skill
+    -ultimate() to perform the ultimate
+    -diplay_info() to display current character info
+For in-depth details about teh enemies abilities please read the Tutorial.txt file.
+All enemies inherit from the AI class
+"""
 class Pollux(AI):
     def __init__(self, hp = 20000):
         self.hp = hp
@@ -33,40 +45,39 @@ class Pollux(AI):
         self.energy = 0
         pass
         
-    #Normal Aattck class: changed text output
-    def normalAttack(self,opp):
-        dmg = round(self.fullhp*0.03)
+    
+    def normal_attack(self, opp):
+        dmg = round(self.fullhp * 0.03)
         print(f"{self.name} [Normal Attack]: {self.na_name}=> {dmg}💥")
-        opp.takeDamage(dmg,self)
+        opp.take_damage(dmg, self)
         self.skill_points += 1
         self.energy += 15
         
         
-    #Skill class: changed text output
-    def skill(self,opp):
+    def skill(self, opp):
         if self.skill_points > 0:
             if opp.hp < 500:
                 dmg = opp.hp - 1
             else:
-                dmg = round(opp.hp*0.15)
+                dmg = round(opp.hp * 0.15)
             self.hp += round(dmg)
             print(f"{self.name} [Skill]: {self.skill_name} => Stole ➕{dmg}.")
-            opp.takeDamage(dmg,self)
+            opp.take_damage(dmg, self)
             self.skill_points -= 1
             self.energy += 30
-            
-    #Ultimate class: changed text output
+
+
     def ultimate(self,opp):
         if self.energy >= 100:
-            self.hp += self.fullhp*0.1
+            self.hp += self.fullhp * 0.1
             opp.poisoned += 2
             self.energy -= 100
             print(f"{self.name} [Ultimate]: {self.ultimate_name} => ➕ {self.fullhp*0.1}  HP! You've been poisoned!")
             
-    def takeDamage(self,dmg,opp=None):
+    def take_damage(self, dmg, opp=None):
         self.hp -= dmg
 
-    def displayInfo(self):
+    def display_info(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
          print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
          print(15*"-")
@@ -89,36 +100,36 @@ class Lieutenant(AI):
         pass
         
     #Normal Aattck class: changed text output
-    def normalAttack(self,opp):
+    def normal_attack(self, opp):
         dmg = round(self.atk*0.3)
         print(f"{self.name} [Normal Attack]: {self.na_name}=> {dmg}💥")
-        opp.takeDamage(dmg,self)
+        opp.take_damage(dmg,self)
         self.skill_points += 1
         self.energy += 20
         
         
     #Skill class: changed text output
-    def skill(self,opp):
+    def skill(self, opp):
         if self.skill_points > 0:
-            dmg = round(self.atk*0.7)
+            dmg = round(self.atk * 0.7)
             self.shield += dmg
             print(f"{self.name} [Skill]: {self.skill_name}=> {dmg}💥, 🛡️ {dmg}")
-            opp.takeDamage(dmg,self)
+            opp.take_damage(dmg, self)
             self.skill_points -= 1
             self.energy += 50
             
     #Ultimate class: changed text output
-    def ultimate(self,opp):
+    def ultimate(self, opp):
         if self.energy >= 100:
             self.energy -= 100
             print(f"{self.name} [Ultimate]: {self.ultimate_name} and activated it!")
             self.reflection += 3
 
-    def takeDamage(self,dmg,opp):
+    def take_damage(self, dmg, opp):
         self.hp -= dmg
         if self.reflection >= 1:
             self.reflection -= 1
-            reduction = round(dmg*0.5)
+            reduction = round(dmg * 0.5)
             if self.shield > 0:
                 self.shield -= reduction
                 if self.shield < 0:
@@ -127,9 +138,9 @@ class Lieutenant(AI):
             else: self.hp -= reduction
             atk = round(self.atk*0.2)
             print(f"{Fore.LIGHTBLACK_EX}[Shield Reflection]{Style.RESET_ALL} => Resisted {reduction} DMG!, caused {atk}💥")
-            opp.takeDamage(atk,self)
+            opp.take_damage(atk,self)
 
-    def displayInfo(self):
+    def display_info(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
          print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
          print(f"[SHIELD]: {Fore.LIGHTWHITE_EX}{self.shield}{Style.RESET_ALL}")
@@ -147,10 +158,10 @@ class Sunday(AI):
         self.p3_ultimate_name = "Im Anfang war die Tat"
         self.p2_ultimate_name = "Come Un Sogno"
         self.p2_na_name = "Maestoso"
-        self.Echoes = 0
+        self.echoes = 0
         self.echo1hp = 0
         self.echo2hp = 0
-        self.echofullhp = round(self.hp*0.1)
+        self.echofullhp = round(self.hp * 0.1)
         self.fullhp = hp
         self.poisoned = 0
         self.phase = 0
@@ -161,11 +172,11 @@ class Sunday(AI):
         pass
         
     #Normal Aattck class: changed text output
-    def normalAttack(self,opp):
+    def normal_attack(self, opp):
         if self.phase == 0:
-            dmg = round(self.atk*0.2)
+            dmg = round(self.atk * 0.2)
             print(f"{self.name} [Normal Attack]: {self.p2_na_name}=> {dmg}💥")
-            opp.takeDamage(dmg,self)
+            opp.take_damage(dmg, self)
             self.skill_points += 1
             self.energy += 20
         else:
@@ -194,45 +205,43 @@ class Sunday(AI):
                 case 8:
                     dmg = self.atk * 5
                     print(f"{self.name} [Ultimate]: {self.p3_ultimate_name} => {dmg}💥")
-                    opp.takeDamage(dmg,self)
+                    opp.take_damage(dmg,self)
                     self.count = 1
 
-
-        
         
     #Skill class: changed text output
-    def skill(self,opp):
+    def skill(self, opp):
         if self.skill_points > 0:
-            dmg = round(self.atk*0.5)
+            dmg = round(self.atk * 0.5)
             print(f"{self.name} [Skill]: {self.p2_skill_name}=> {dmg}💥")
-            opp.takeDamage(dmg,self)
+            opp.take_damage(dmg, self)
             self.skill_points -= 1
             self.energy += 45
             
     #Ultimate class: changed text output
-    def ultimate(self,opp):
+    def ultimate(self, opp):
         if self.energy >= 100:
             self.energy -= 100
-            print(f"{self.name} [Ultimate]: {self.p2_ultimate_name} and summoned his Echoes!")
-            if self.Echoes == 0:
-                self.Echoes = 1
+            print(f"{self.name} [Ultimate]: {self.p2_ultimate_name} and summoned his echoes!")
+            if self.echoes == 0:
+                self.echoes = 1
                 self.echo1hp = self.echofullhp
                 self.echo2hp = self.echofullhp
-                self.atk += round(self.fullatk*0.2)
+                self.atk += round(self.fullatk * 0.2)
             else:
                 if self.echo1hp <= 0:
                     self.echo1hp = self.echofullhp
-                    self.atk += round(self.fullatk*0.1)
+                    self.atk += round(self.fullatk * 0.1)
                 else: self.echo1hp = self.echofullhp
                 if self.echo2hp <= 0:
                     self.echo2hp = self.echofullhp
-                    self.atk += round(self.fullatk*0.1)
+                    self.atk += round(self.fullatk * 0.1)
                 else: self.echo2hp = self.echofullhp
                     
 
-    def takeDamage(self,dmg,opp):
+    def take_damage(self, dmg, opp):
         if self.phase == 0:
-            if self.Echoes == 1:
+            if self.echoes == 1:
                 char = ["sunday"]
                 weight = [20]
                 if self.echo1hp > 0:
@@ -250,12 +259,12 @@ class Sunday(AI):
                         char.remove("echo1")
                         self.hp += 1000
                         opp.hp += 500
-                        opp.hpCap()
+                        opp.hp_cap()
                         print("[ECHO 1]: Left the field. ➕1000")
                         print("You ➕500")
-                        self.atk -= round(self.fullatk*0.1)
+                        self.atk -= round(self.fullatk * 0.1)
                         if self.echo2hp <= 0:
-                            self.Echoes = 0     
+                            self.echoes = 0     
                 elif attacked == "echo2": 
                     self.echo2hp -= dmg
                     print((f"[ECHO 2] took the damage!"))
@@ -264,34 +273,34 @@ class Sunday(AI):
                         char.remove("echo2")
                         self.hp += 1000
                         opp.hp += 500
-                        opp.hpCap()
+                        opp.hp_cap()
                         print("[ECHO 2]: Left the field. ➕1000")
                         print("You ➕500")
-                        self.atk -= round(self.fullatk*0.1)
+                        self.atk -= round(self.fullatk * 0.1)
                         if self.echo1hp <= 0:
-                            self.Echoes = 0  
+                            self.echoes = 0  
                 else:
                     print("[SUNDAY] took the damage!")
                     self.hp -= dmg
-                    self.Echoes = 0
+                    self.echoes = 0
                     self.echo1hp = 0
                     self.echo2hp = 0
                     if "echo1" in char:
                         char.remove("echo1")
                         print("[ECHO 1]: Left the field. ➕1000")
                         print("You ➕500")
-                        self.atk -= round(self.fullatk*0.1)
+                        self.atk -= round(self.fullatk * 0.1)
                         self.hp += 1000
                         opp.hp += 500
-                        opp.hpCap()
+                        opp.hp_cap()
                     if "echo2" in char:
                         char.remove("echo2")
                         print("[ECHO 2]: Left the field. ➕1000")
                         print("You ➕500")
-                        self.atk -= round(self.fullatk*0.1)
+                        self.atk -= round(self.fullatk * 0.1)
                         self.hp += 1000
                         opp.hp += 500
-                        opp.hpCap() 
+                        opp.hp_cap() 
                     for w in weight:
                         if w == 40:
                             weight.remove(w)
@@ -301,7 +310,7 @@ class Sunday(AI):
                         playsound(str(audio), block = False)
                         time.sleep(2.7)
                         slow("\nAll the work of creation has been completed..")
-                        time.sleep(197)
+                        time.sleep(1.97)
                         slow("The inevitable day has arrived..")
                         time.sleep(2)
                         slow("The Embryo of Philosophy..")
@@ -312,7 +321,7 @@ class Sunday(AI):
                         time.sleep(4)
                         print("The boss has transformed to its second phase!\n")
                         opp.hp += 1500
-                        opp.hpCap()
+                        opp.hp_cap()
                         print("➕ 1500")
                         self.energy = 0
                         self.skill_points = 0 
@@ -335,19 +344,19 @@ class Sunday(AI):
                     time.sleep(4)
                     print("The boss has transformed to its second phase!\n")
                     opp.hp += 1500
-                    opp.hpCap()
+                    opp.hp_cap()
                     print("➕ 1500")
                     self.energy = 0
                     self.skill_points = 0        
         else:
-            reduction = round(dmg*0.3)
+            reduction = round(dmg * 0.3)
             self.hp -= reduction
-            shield = round(dmg*0.5)
+            shield = round(dmg * 0.5)
             opp.shield += shield
             print(f"[Embryo of Philosophy]: Reduced damage taken to {reduction}💥, 🛡️ {shield}")
             print(f"[SHIELD]: accumulated {opp.shield}")
 
-    def displayInfo(self):
+    def display_info(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
          print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
          if self.echo1hp > 0:
