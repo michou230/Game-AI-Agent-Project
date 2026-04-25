@@ -8,8 +8,11 @@ Link: https://hsr.hoyoverse.com/en-us/
 ## INSTRUCTIONS:
 After cloning the repository, run this line:
 
--```pip install -r requirements.txt```
+```pip install -r requirements.txt```
 
 then open **maincode.py** and run the game.
 
 ***Enjoy ^^***
+
+## LICENSE:
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
