@@ -3,7 +3,7 @@
 This is a little university eduactional fan project to make an AI game agent.
 This game is based on Honkai Star Rail by Hoyoverse which is a turn based RPG game. All the , names and voicelines used in this project belongs to Hoyoverse and are included for demonstration puposes only.
 <br>No copyright infringement intended.
-<br>Link: https://hsr.hoyoverse.com/en-us/
+<br>Link: https://hsr.hoyoverse.com/en-us/news?utm_source=hsrofficialweb&utm_medium=fab&utm_campaign=button
 
 ## INSTRUCTIONS:
 After cloning the repository, run this line:
