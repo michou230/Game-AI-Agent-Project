@@ -61,6 +61,7 @@ class Pollux(AI):
             else:
                 dmg = round(opp.hp * 0.15)
             self.hp += round(dmg)
+            self.hp_cap()
             print(f"{self.name} [Skill]: {self.skill_name} => Stole ➕{dmg}.")
             opp.take_damage(dmg, self)
             self.skill_points -= 1
@@ -76,6 +77,10 @@ class Pollux(AI):
             
     def take_damage(self, dmg, opp=None):
         self.hp -= dmg
+
+    def hp_cap(self):
+        if self.hp > self.fullhp:
+            self.hp = self.fullhp
 
     def display_info(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL}")
@@ -99,7 +104,7 @@ class Lieutenant(AI):
         self.energy = 0
         pass
         
-    #Normal Aattck class: changed text output
+    
     def normal_attack(self, opp):
         dmg = round(self.atk*0.3)
         print(f"{self.name} [Normal Attack]: {self.na_name}=> {dmg}💥")
@@ -108,7 +113,7 @@ class Lieutenant(AI):
         self.energy += 20
         
         
-    #Skill class: changed text output
+    
     def skill(self, opp):
         if self.skill_points > 0:
             dmg = round(self.atk * 0.7)
@@ -118,7 +123,7 @@ class Lieutenant(AI):
             self.skill_points -= 1
             self.energy += 50
             
-    #Ultimate class: changed text output
+    
     def ultimate(self, opp):
         if self.energy >= 100:
             self.energy -= 100
@@ -171,7 +176,7 @@ class Sunday(AI):
         self.energy = 0
         pass
         
-    #Normal Aattck class: changed text output
+    
     def normal_attack(self, opp):
         if self.phase == 0:
             dmg = round(self.atk * 0.2)
@@ -209,7 +214,7 @@ class Sunday(AI):
                     self.count = 1
 
         
-    #Skill class: changed text output
+    
     def skill(self, opp):
         if self.skill_points > 0:
             dmg = round(self.atk * 0.5)
@@ -218,7 +223,7 @@ class Sunday(AI):
             self.skill_points -= 1
             self.energy += 45
             
-    #Ultimate class: changed text output
+    
     def ultimate(self, opp):
         if self.energy >= 100:
             self.energy -= 100
@@ -237,7 +242,29 @@ class Sunday(AI):
                     self.echo2hp = self.echofullhp
                     self.atk += round(self.fullatk * 0.1)
                 else: self.echo2hp = self.echofullhp
-                    
+    
+    #second phase transformation method
+    def second_phase(self, opp):
+        self.poisoned = 0
+        time.sleep(1)
+        playsound(str(audio), block = False)
+        time.sleep(2.7)
+        slow("\nAll the work of creation has been completed..")
+        time.sleep(1.97)
+        slow("The inevitable day has arrived..")
+        time.sleep(2)
+        slow("The Embryo of Philosophy..")
+        time.sleep(1.5)
+        slow("WILL RESHAPE FOR US ALL OF REALITY!\n")
+        self.phase = 1
+        self.hp = 20000
+        time.sleep(4)
+        print("The boss has transformed to its second phase!\n")
+        opp.hp += 1500
+        opp.hp_cap()
+        print("➕ 1500")
+        self.energy = 0
+        self.skill_points = 0  
 
     def take_damage(self, dmg, opp):
         if self.phase == 0:
@@ -305,49 +332,11 @@ class Sunday(AI):
                         if w == 40:
                             weight.remove(w)
                     if self.hp <= 0:
-                        self.poisoned = 0
-                        time.sleep(1)
-                        playsound(str(audio), block = False)
-                        time.sleep(2.7)
-                        slow("\nAll the work of creation has been completed..")
-                        time.sleep(1.97)
-                        slow("The inevitable day has arrived..")
-                        time.sleep(2)
-                        slow("The Embryo of Philosophy..")
-                        time.sleep(1.5)
-                        slow("WILL RESHAPE FOR US ALL OF REALITY!\n")
-                        self.phase = 1
-                        self.hp = 20000
-                        time.sleep(4)
-                        print("The boss has transformed to its second phase!\n")
-                        opp.hp += 1500
-                        opp.hp_cap()
-                        print("➕ 1500")
-                        self.energy = 0
-                        self.skill_points = 0 
+                        self.second_phase(opp)
             else: 
                 self.hp -= dmg
                 if self.hp <= 0:
-                    self.poisoned = 0
-                    time.sleep(1)
-                    playsound(str(audio), block = False)
-                    time.sleep(2.7)
-                    slow("\nAll the work of creation has been completed..")
-                    time.sleep(1.97)
-                    slow("The inevitable day has arrived..")
-                    time.sleep(2)
-                    slow("The Embryo of Philosophy..")
-                    time.sleep(1.5)
-                    slow("WILL RESHAPE FOR US ALL OF REALITY!\n")
-                    self.phase = 1
-                    self.hp = 20000
-                    time.sleep(4)
-                    print("The boss has transformed to its second phase!\n")
-                    opp.hp += 1500
-                    opp.hp_cap()
-                    print("➕ 1500")
-                    self.energy = 0
-                    self.skill_points = 0        
+                    self.second_phase(opp)                
         else:
             reduction = round(dmg * 0.3)
             self.hp -= reduction
