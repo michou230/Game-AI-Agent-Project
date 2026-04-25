@@ -424,7 +424,7 @@ class Hyacine(Effects):
         self.skill_points = 2
         self.energy = 0
     
-    #slightly chnaged hp_cap for hyacine
+    #slightly changed hp_cap for hyacine: added ica
     def hp_cap(self):
         if self.hp > self.fullhp:
             self.hp = self.fullhp
