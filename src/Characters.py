@@ -7,13 +7,13 @@ from playsound import playsound
 
 #Paths for voicelines
 base = Path(__file__).resolve().parent
-kafka_fua = base.parent / "data" / "assets" / ".mp3"
-mydei = base.parent / "data" / "assets" / ".mp3"
-blade_ult = base.parent / "data" / "assets" / ".mp3"
-blade_fua = base.parent / "data" / "assets" / ".mp3"
-sparxie = base.parent / "data" / "assets" / ".mp3"
-hyacine = base.parent / "data" / "assets" / ".mp3"
-kafka_ult = base.parent / "data" / "assets" / ".mp3"
+kafka_fua = base.parent / "data" / "assets" / "kafkafua.mp3"
+mydei = base.parent / "data" / "assets" / "mydei.mp3"
+blade_ult = base.parent / "data" / "assets" / "blade.mp3"
+blade_fua = base.parent / "data" / "assets" / "bladefua.mp3"
+sparxie = base.parent / "data" / "assets" / "sparxie.mp3"
+hyacine = base.parent / "data" / "assets" / "Hyacine.mp3"
+kafka_ult = base.parent / "data" / "assets" / "kafka.mp3"
 
 #Method for slow typing
 def slow(text):
@@ -126,7 +126,9 @@ class Mydei(Effects):
             self.hp_cap()
             self.energy = 0
             playsound(str(mydei), block = False)
+            time.sleep(1)
             slow("Now accept your punishment!")
+            time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥, ➕{heal}")
             opp.take_damage(dmg, self)
             return 1
@@ -205,7 +207,9 @@ class Blade(Effects):
         self.energy_cap(25)
         opp.take_damage(dmg,self)
         playsound(str(blade_fua), block = False)
+        time.sleep(1)
         slow("A vale to send you!")
+        time.sleep(1)
         print(f"[Follow-up ATK]: Shuhu's Gift => {dmg}💥, ➕{heal}")
         self.stack = 0
     
@@ -234,7 +238,9 @@ class Blade(Effects):
             dmg = round(self.fullhp * 0.9)
             self.energy = 0
             playsound(str(blade_ult), block = False)
+            time.sleep(1)
             slow("Savor it for me!")
+            time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
             opp.take_damage(dmg,self)
             if self.stack >= 5:
@@ -378,7 +384,9 @@ class Sparxie(Effects):
             self.punchline += 5
             self.energy = 0
             playsound(str(sparxie), block = False)
+            time.sleep(1)
             slow("Party 'till the end of the world!")
+            time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
             opp.take_damage(dmg,self)
             return 1
@@ -521,7 +529,9 @@ class Hyacine(Effects):
             self.hp_cap()
             self.heal += heal
             playsound(str(hyacine), block = False)
+            time.sleep(1)
             slow("Dispel the gloom, restore the skies!")
+            time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => ➕{heal}, new max [HP] => {self.fullhp}")
             self.fullhp_count = 3
             if self.ica == 0:
@@ -589,7 +599,7 @@ class Kafka(Effects):
             dmg = round(self.atk * 0.25)
             if self.skill_points < 5:
                 self.skill_points += 1
-            self.energy_cap(20)
+            self.energy_cap(30)
             print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
             opp.take_damage(dmg, self)
             if self.fua_counter >= 1:
@@ -602,7 +612,9 @@ class Kafka(Effects):
         opp.poisoned += 2
         self.energy_cap(25)
         playsound(str(kafka_fua), block = False)
+        time.sleep(1)
         slow("Stand still")
+        time.sleep(1)
         print(f"[Follow-up ATK]: Gentle but Cruel => {dmg}💥\nIncreased opponent's poisoned state to {opp.poisoned}")
         opp.take_damage(dmg, self)
     
@@ -611,7 +623,7 @@ class Kafka(Effects):
         if self.skill_points > 0:
             dmg = round(self.atk * 0.4)
             self.skill_points -= 1
-            self.energy_cap(30)
+            self.energy_cap(40)
             print(f"[Skill]: {self.skill_name} => {dmg}💥")
             opp.take_damage(dmg, self)
             if opp.poisoned >= 1:
@@ -631,13 +643,17 @@ class Kafka(Effects):
             dmg = round(self.atk * 0.9)
             self.energy = 0
             playsound(str(kafka_ult), block = False)
-            slow("Time to say bye. BOOM.")
+            time.sleep(1)
+            slow("Time to say bye.")
+            time.sleep(1.5)
+            slow("BOOM.")
+            time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
             opp.take_damage(dmg, self)
             self.fua_counter += 2
             if opp.poisoned >= 1:
-                opp.take_damage(round(opp.poisoned_dmg*2),self)
                 print(f"[DOT] => {round(opp.poisoned_dmg*2)}💥")
+                opp.take_damage(round(opp.poisoned_dmg*2),self)
             return 1
         else:
             print("Not enough energy to unleash Ultimate! please choose a different move.\n")

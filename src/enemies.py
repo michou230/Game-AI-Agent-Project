@@ -139,7 +139,7 @@ class Lieutenant(AI):
             atk = round(self.atk*0.2)
             print(f"{Fore.LIGHTBLACK_EX}[Shield Reflection]{Style.RESET_ALL} => Resisted {reduction} DMG!, caused {atk}💥")
             opp.take_damage(atk,self)
-
+            
     def display_info(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
          print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
