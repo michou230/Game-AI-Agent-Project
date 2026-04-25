@@ -14,6 +14,9 @@ then open **maincode.py** and run the game.
 
 ***Enjoy ^^***
 
+## Tutorial:
+Each character has its own skills and abilities as well as the enemies. Before playing, please check out the [![Tutorial](https://img.shields.io/badge/Tutorial-red)](Tutorial.txt) or play randomly if you wish :)
+
 ## LICENSE:
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
