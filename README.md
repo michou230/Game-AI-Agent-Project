@@ -5,10 +5,10 @@ This game is based on Honkai Star Rail by Hoyoverse which is a turn based RPG ga
 No copyright infringement intended.
 Link: https://hsr.hoyoverse.com/en-us/
 
-# INSTRUCTIONS:
+## INSTRUCTIONS:
 After cloning the repository, run this line:
 
-    -```pip install -r requirements.txt```
+-```pip install -r requirements.txt```
 
 then open **maincode.py** and run the game.
 
