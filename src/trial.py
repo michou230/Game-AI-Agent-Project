@@ -108,7 +108,54 @@ class AI(Character):
                 print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! Your hp is now: 0")
                 opp.take_damage(300)
 
-    #AI random move based on available resources
+    #New: utility-based AI
+    def ai_move(self, opponent):
+
+        utilities = {}
+
+        # Normal Attack
+        normal_score = 5
+
+        if self.skill_points == 0:
+            normal_score += 5
+
+        utilities["normal"] = normal_score
+
+
+        # Skill
+        if self.skill_points > 0:
+            skill_score = 5
+
+            if self.hp < self.fullhp * 0.5:
+                skill_score += 7
+
+            utilities["skill"] = skill_score
+
+
+        # Ultimate
+        if self.energy >= 100:
+            ult_score = 50
+
+            if self.hp < self.fullhp * 0.4:
+                ult_score += 33
+
+            utilities["ultimate"] = ult_score
+
+        actions = list(utilities.keys())
+        weights = list(utilities.values())
+        move = random.choices(actions, weights=weights)[0]
+
+        if move == "normal":
+            self.normal_attack(opponent)
+
+        elif move == "skill":
+            self.skill(opponent)
+
+        elif move == "ultimate":
+            self.ultimate(opponent)
+    
+    #Previous: probabilistic AI
+    """#AI random move based on available resources
     def ai_move(self,opponent):
         available = []
         proba = []
@@ -132,4 +179,4 @@ class AI(Character):
         elif move == "skill":
             self.skill(opponent)
         elif move == "ultimate":
-            self.ultimate(opponent)
+            self.ultimate(opponent)"""
