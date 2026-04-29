@@ -460,14 +460,14 @@ class Hyacine(Effects):
             
     #Special attack method for Ica
     def ica_damage(self):
-        dmg = round(self.heal * 0.5)
+        dmg = round(self.heal*0.7)
         self.ica_count -= 1
         if self.heal >= 1000:
                 self.heal -= self.heal * 0.5
         return dmg
     
     def normal_attack(self, opp):
-        dmg = round(self.fullhp * 0.15)
+        dmg = round(self.fullhp * 0.2)
         if self.skill_points < 5:
             self.skill_points += 1
         self.energy_cap(15)
@@ -492,6 +492,7 @@ class Hyacine(Effects):
         if self.skill_points > 0:
             heal = round(self.fullhp * 0.15)
             self.hp += heal
+            self.heal += heal
             self.hp_cap()
             self.skill_points -= 1
             self.energy_cap(50)

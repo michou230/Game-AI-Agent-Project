@@ -86,14 +86,14 @@ SPECIAL TRAITS: This character heals, does damage based on her max hp and summon
 
 STATS: 5500 HP 
 
-Normal Attack => "When Breeze Kisses Cirrus" : inflicts 15% dmg of her max hp.
+Normal Attack => "When Breeze Kisses Cirrus" : inflicts 20% dmg of her max hp.
 
 Skill => "Love Over The Rainbow": Consumes 1 Skill Point to heal herself 15% hp of her max hp. Summons Little Ica.
 Little Ica: has 50% of Hyacinthia's initial max hp and can perform his Special Attack when enough stacks are provided. If Hyacine's Skill was performed while Ica is on the field, Heals him for the same amount of hp too. Ica will remain on the field when summoned until he dies. While on the field, there is a 60% to target him instead of Hyacine. Cannot be poisoned.
 
 Ultimate => "We Who Fly Into Twilight": Increases max hp by 25% of her own max hp for 3 turns and heals herself for 30% of her initial max hp. Summons Little Ica and perform his Special Attack and gain 3 Stacks. If Little Ica was present on the field when performing the Ultimate, heals him for the same amount of HP. Little Ica's max Hp is NOT affected.
 
-Little Ica's Special Attack => "Rainclouds, Time To Go!" : Consume 1 Stack and deals damage to the enemy based on 50% of the accumulated healing tally whenever Hyacine performs a Normal Attack/Skill. Clears 50% of the tally for each time until the tally is less than 1000.
+Little Ica's Special Attack => "Rainclouds, Time To Go!" : Consume 1 Stack and deals damage to the enemy based on 70% of the accumulated healing tally whenever Hyacine performs a Normal Attack/Skill. Clears 50% of the tally for each time until the tally is less than 1000.
 
 ========== KAFKA ==========
 
