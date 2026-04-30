@@ -3,6 +3,18 @@ from colorama import Fore, Style, init
 
 #THIS FILE ONLY HOLDS THE BASIC CHARACTER/AI MOVES WHICH IS THE BASE IDEA OF THE GAMEPLAY.
 init()
+
+class Shared():
+    def __init__(self, hp,sp = 2):
+        self.hp = hp
+        self.fullhp = hp
+        self.shield = 0
+        self.energy = 0
+        self.skill_points = sp
+        self.poisoned = 0
+        self.poisoned_dmg = self.fullhp * 0.05
+        pass
+    
 class Character:
     #initialization
     def __init__(self,name = "Character",na = "Normal Attack",skill= "Skill",ultimate= "Ultimate",hp = 100):
