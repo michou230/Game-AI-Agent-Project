@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 from colorama import Fore, Style, init
 from playsound import playsound
-
+from trial import Shared
 #Paths for voicelines
 base = Path(__file__).resolve().parent
 kafka_fua = base.parent / "data" / "assets" / "kafkafua.mp3"
@@ -57,20 +57,14 @@ For in-depth details about characters skill please read the Tutorial.txt file.
 All characters inherit from the effects class.
  """
 
-class Mydei(Effects):
+class Mydei(Effects,Shared):
     def __init__(self, hp = 5000):
+        Shared.__init__(self,hp)
         self.name = "Mydei"
         self.skill_name = "Deaths are Legion, Regrets are None"
         self.ultimate_name = "Throne of Bones"
         self.na_name = "Vow of voyage"
-        self.hp = hp
-        self.fullhp = hp
-        self.poisoned = 0
-        self.poisoned_dmg = self.fullhp * 0.05
         self.vendetta = 1
-        self.shield = 0
-        self.skill_points = 2
-        self.energy = 0
     
     #take damage method
     def take_damage(self, dmg, opp=None):
@@ -90,7 +84,7 @@ class Mydei(Effects):
         dmg = round(self.fullhp * 0.25)
         if self.skill_points < 5:
             self.skill_points += 1
-        self.energy_cap(15)
+        self.energy_cap(30)
         print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
         opp.take_damage(dmg,self)
         return 1
@@ -145,8 +139,9 @@ class Mydei(Effects):
         print(15*"-")
 
 
-class Blade(Effects):
+class Blade(Effects,Shared):
     def __init__(self, hp = 5000):
+        Shared.__init__(self,hp)
         self.name = "Blade"
         self.skill_name = "Hellscape"
         self.ultimate_name = "Death Sentence"
@@ -155,13 +150,7 @@ class Blade(Effects):
         self.hellscape = 0
         self.counter = 0
         self.stack = 0
-        self.poisoned = 0
-        self.shield = 0
-        self.hp = hp
-        self.fullhp = hp
-        self.poisoned_dmg = self.fullhp * 0.05
-        self.skill_points = 2
-        self.energy = 0
+        
 
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
@@ -260,6 +249,7 @@ class Blade(Effects):
 
 class Sparxie(Effects):
     def __init__(self, hp = 5000, atk = 1500):
+        Shared.__init__(self,hp,3)
         self.name = "Sparxie"
         self.skill_name = "Bloom! Winner Takes All"
         self.ultimate_name = "Party's Wildin' and Cameras' Rollin'"
@@ -267,16 +257,10 @@ class Sparxie(Effects):
         self.punchline = 0
         self.skill_state = 0
         self.skillCounter = 0
-        self.fullhp = hp
-        self.poisoned_dmg = self.fullhp * 0.05
-        self.hp = hp
-        self.poisoned = 0
         self.fullatk = atk
         self.atk = atk
         self.turn = 0
-        self.shield = 0
-        self.skill_points = 3
-        self.energy = 0
+        
     
     #Turn counter for her talent: elation skill
     def turn_counter(self, opp):
@@ -318,9 +302,10 @@ class Sparxie(Effects):
             opp.take_damage(dmg, self)
         else:
             dmg = round(self.atk*self.skillCounter * 0.35)
-            self.skillCounter = 0
             self.skill_state = 0
-            self.energy_cap(30)
+            energy = 30 + self.skillCounter * 2
+            self.energy_cap(energy)
+            self.skillCounter = 0
             print(f"[Skill]: {self.skill_name} => {dmg}💥")
             opp.take_damage(dmg, self)
         self.turn_counter(opp)
@@ -402,27 +387,22 @@ class Sparxie(Effects):
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
         print(15*"-")
 
-class Hyacine(Effects):
+class Hyacine(Effects,Shared):
     def __init__(self, hp = 5500):
+        Shared.__init__(self,hp)
         self.name = "Hyacine"
         self.skill_name = "Love Over The Rainbow"
         self.ultimate_name = "We Who Fly Into Twilight"
         self.na_name = "When Breeze Kisses Cirrus"
-        self.hp = hp
-        self.fullhp = hp
         self.fullhp_count = 0
         self.fullhpbuff = round(self.fullhp * 0.25)
         self.icafullhp = round(self.fullhp * 0.5)
         self.heal = 1000
         self.ica = 0
-        self.poisoned = 0
-        self.poisoned_dmg = self.fullhp * 0.05
         self.ica_count = 0
-        self.shield = 0
         self.ica_hp = round(self.fullhp * 0.5)
         self.ica_attack = "Rainclouds, Time To Go!"
-        self.skill_points = 2
-        self.energy = 0
+        
     
     #slightly changed hp_cap for hyacine: added ica
     def hp_cap(self):
@@ -568,22 +548,17 @@ class Hyacine(Effects):
         print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
         print(15*"-")
 
-class Kafka(Effects):
+class Kafka(Effects,Shared):
     def __init__(self, hp = 4500, atk = 2000):
+        Shared.__init__(self,hp)
         self.name = "Kafka"
         self.skill_name = "Caressing Moonlight"
         self.ultimate_name = "Twilight Trill"
         self.na_name = "Midnight Tumult"
         self.fua_counter = 0
-        self.poisoned = 0
-        self.hp = hp
-        self.fullhp = hp
-        self.poisoned_dmg = self.fullhp * 0.05
         self.atk = atk
         self.fullatk = atk
-        self.shield = 0
-        self.skill_points = 2
-        self.energy = 0
+       
 
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:

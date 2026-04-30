@@ -4,7 +4,8 @@ import sys
 from pathlib import Path
 from playsound import playsound
 from colorama import Fore, Style, init
-from trial import AI
+from trial import AI,Shared
+
 
 #Voicelines path
 base = Path(__file__).resolve().parent
@@ -31,18 +32,13 @@ Each enemy has 5 methods that are the same:
 For in-depth details about teh enemies abilities please read the Tutorial.txt file.
 All enemies inherit from the AI class
 """
-class Pollux(AI):
+class Pollux(AI,Shared):
     def __init__(self, hp = 20000):
-        self.hp = hp
+        Shared.__init__(self,hp)
         self.name = "Pollux"
         self.skill_name = "To Die in Aromatic Pain"
         self.ultimate_name = "To Bury the Slumbered"
-        self.na_name = "To Stay the Fallen"
-        self.fullhp = hp
-        self.poisoned = 0
-        self.poisoned_dmg = self.fullhp * 0.05
-        self.skill_points = 2
-        self.energy = 0
+        self.na_name = "To Stay the Fallen" 
         pass
         
     
@@ -87,21 +83,15 @@ class Pollux(AI):
          print(f"[POISON]: {Fore.MAGENTA}{self.poisoned}{Style.RESET_ALL}")
          print(15*"-")
 
-class Lieutenant(AI):
-    def __init__(self, hp = 10000, atk = 1300):
-        self.hp = hp
+class Lieutenant(AI,Shared):
+    def __init__(self, hp = 10000, atk = 1400):
+        Shared.__init__(self,hp)
         self.atk = atk
         self.name = "Silvermane Lieutenant"
         self.skill_name = "Pierce"
         self.ultimate_name = "Shield Reflect"
         self.na_name = "Assault"
-        self.fullhp = hp
-        self.poisoned = 0
         self.reflection = 0
-        self.shield = 0
-        self.poisoned_dmg = self.fullhp * 0.05
-        self.skill_points = 2
-        self.energy = 0
         pass
         
     
@@ -111,7 +101,6 @@ class Lieutenant(AI):
         opp.take_damage(dmg,self)
         self.skill_points += 1
         self.energy += 20
-        
         
     
     def skill(self, opp):
@@ -131,19 +120,23 @@ class Lieutenant(AI):
             self.reflection += 3
 
     def take_damage(self, dmg, opp):
-        self.hp -= dmg
         if self.reflection >= 1:
             self.reflection -= 1
             reduction = round(dmg * 0.5)
-            if self.shield > 0:
-                self.shield -= reduction
-                if self.shield < 0:
-                    self.hp += self.shield
-                    self.shield = 0
-            else: self.hp -= reduction
-            atk = round(self.atk*0.2)
-            print(f"{Fore.LIGHTBLACK_EX}[Shield Reflection]{Style.RESET_ALL} => Resisted {reduction} DMG!, caused {atk}💥")
-            opp.take_damage(atk,self)
+            final_dmg = dmg - reduction
+        else:
+            reduction = 0
+            final_dmg = dmg
+
+        absorbed = min(self.shield, final_dmg)
+        self.shield -= absorbed
+        remaining = final_dmg - absorbed
+        self.hp -= remaining
+
+        if self.hp > 0 and reduction > 0:
+                atk = round(self.atk*0.5)
+                print(f"{Fore.LIGHTBLACK_EX}[Shield Reflection]{Style.RESET_ALL} => Resisted {reduction} DMG!, caused {atk}💥")
+                opp.take_damage(atk,self)
             
     def display_info(self):
          print(f"[ENEMY]: {self.name}\n[HP]: {Fore.GREEN}{round(self.hp)}{Style.RESET_ALL} | [ATK]: {Fore.RED}{round(self.atk)}{Style.RESET_ALL}")
@@ -153,9 +146,9 @@ class Lieutenant(AI):
          print(15*"-")
             
 
-class Sunday(AI):
+class Sunday(AI,Shared):
     def __init__(self, hp = 10000, atk = 1500):
-        self.hp = hp
+        Shared.__init__(self,hp)
         self.atk = atk
         self.fullatk = atk
         self.name = "Harmonic Choir"
@@ -167,13 +160,8 @@ class Sunday(AI):
         self.echo1hp = 0
         self.echo2hp = 0
         self.echofullhp = round(self.hp * 0.1)
-        self.fullhp = hp
-        self.poisoned = 0
         self.phase = 0
         self.count = 1
-        self.poisoned_dmg = self.fullhp * 0.05
-        self.skill_points = 2
-        self.energy = 0
         pass
         
     
