@@ -71,7 +71,7 @@ STATS: 5000 HP | 1500 ATK
 
 Normal Attack => "Cat Got Your Flametoungue?": inflict 50% dmg of her max atk. Gains 2 Punchline.
 
-Skill => "Boom! Sparxicle's Poppin'": Start the livestream in which sparxie harvests "Engagement Farming" where there is a 30% chance to trigger "Straight Fire" and a 70% chance to trigger "Unreal Banger". You can keep consuming Skill Points to trigger the effects up to 10 times to then unleash the Special Normal Attack "Bloom! Winner Takes All".
+Skill => "Boom! Sparxicle's Poppin'": Start the livestream in which sparxie harvests "Engagement Farming" where there is a 30% chance to trigger "Straight Fire" and a 70% chance to trigger "Unreal Banger". You can keep consuming Skill Points to trigger the effects up to 10 times to then unleash the Special Normal Attack "Bloom! Winner Takes All". Each skill consumed increases the final enery gained by 2.
 Straight Fire: gain 2 punchlines and 2 Skill Points
 Unreal Banger: gain 1 punchline
 Special Attack: Unleashes a powerful attack based on 35% of Sparxie's base atk and the number of skills consumed (up to 10).
@@ -129,7 +129,7 @@ Ultimate => "To Bury the Slumbered": Poisons you for 2 turns and restores 10% of
 
 SPECIAL TRAITS: This enemy does damage based on their ATK and reflect damage.
 
-STATS: 10000 HP | 1300 ATK
+STATS: 10000 HP | 1400 ATK
 
 Normal Attack => "Assault": Inflicts 30% dmg of their ATK.
 
@@ -137,7 +137,7 @@ Skill => "Pierce": Inflicts 70% dmg of their ATK and gains it as shield.
 
 Ultimate => "Shield Reflect": Activates "Shield Reflect" for 3 turns.
 
-Shield Reflect: Reduces damage received by 50% and launches a counter attack that deals 20% of their ATK.
+Shield Reflect: Reduces damage received by 50% and launches a counter attack that deals 50% of their ATK.
 
 ========== HARMONIC CHOIR (SUNDAY) ==========
 
