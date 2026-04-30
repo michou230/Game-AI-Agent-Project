@@ -126,11 +126,15 @@ while p1.hp > 0 and p2.hp > 0:
         print("\n")
         time.sleep(2)
 
-    if p1.hp <= 0:
+
+    if p1.hp == 0 and p2.hp == 0:
+        print(f"Game Over! That was a tie!")
+    elif p1.hp <= 0:
         print(f"Game Over! {p2.name} won! player {p1.name} lost!")
         break
     elif p2.hp <= 0:
         print(f"Game Over! {p1.name} won! opponent {p2.name} lost!")
         break
+    
 
 
