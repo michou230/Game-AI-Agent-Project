@@ -1,7 +1,18 @@
 import time
 from Characters import *
 from enemies import *
+from pathlib import Path
+import pygame
 
+pygame.mixer.init()
+base = Path(__file__).resolve().parent
+amphoreus = base.parent / "data" / "assets" / "amphoreus.mp3"
+belobog = base.parent / "data" / "assets" / "belobog.mp3"
+xianzhou = base.parent / "data" / "assets" / "xianzhou.mp3"
+planarcadia = base.parent / "data" / "assets" / "planarcadia.mp3"
+herta = base.parent / "data" / "assets" / "herta.mp3"
+penacony = base.parent / "data" / "assets" / "penacony.mp3"
+sunday1 = base.parent / "data" / "assets" / "phase1.mp3"
 
 #MAIN LOOP FOR THE GAME
 
@@ -11,6 +22,7 @@ choose = 0 #FOR PLAYER CHARACTER PICK CHECK
 pick = 0 #FOR PLAYER ENEMY PICK
 choice = 0  #FOR PLAYER ENEMY PICK CHECK
 
+song = random.choice([xianzhou,penacony,herta,amphoreus,planarcadia,belobog])
 
 characters = {
     1: Mydei,
@@ -87,6 +99,11 @@ while pick == 0:
     
     
 # MAIN LOOP
+if p2.name == "Harmonic Choir":
+    song = sunday1
+pygame.mixer.music.load(str(song))
+pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.play(-1)
 print("\nRemember, your moves are:\n[1] for Normal Attack\n[2] for Skill\n[3] for Ultimate")
 turn = 1 #Keeping track of the number of turns
 while p1.hp > 0 and p2.hp > 0:
@@ -94,7 +111,7 @@ while p1.hp > 0 and p2.hp > 0:
     print("\t"+ 30*"=" + f"TURN {turn}" + 30*"=" + "\n")
     while player_move == 0:
         if p1.poisoned >= 1:
-            p1.poison() #check if poisoned, if yes, inflict damage
+            p1.poison(p2) #check if poison0ed, if yes, inflict damage
         p1.display_info()
         p2.display_info()
         m = 0
@@ -127,12 +144,15 @@ while p1.hp > 0 and p2.hp > 0:
         time.sleep(2)
 
 
-    if p1.hp == 0 and p2.hp == 0:
+    if p1.hp <= 0 and p2.hp <= 0:
+        pygame.mixer.music.fadeout(1000)
         print(f"Game Over! That was a tie!")
     elif p1.hp <= 0:
+        pygame.mixer.music.fadeout(1000)
         print(f"Game Over! {p2.name} won! player {p1.name} lost!")
         break
     elif p2.hp <= 0:
+        pygame.mixer.music.fadeout(1000)
         print(f"Game Over! {p1.name} won! opponent {p2.name} lost!")
         break
     
