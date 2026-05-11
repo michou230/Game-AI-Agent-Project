@@ -448,12 +448,11 @@ class Hyacine(Effects,Shared):
         self.energy_cap(15)
         print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
         opp.take_damage(dmg, self)
-        if self.ica == 1:
-            if self.ica_count >= 1:
-                self.energy_cap(10)
-                ica = self.ica_damage()
-                print(f"[Ica: Normal Attack]: {self.ica_attack} => {ica}💥")
-                opp.take_damage(ica, self)
+        if self.ica == 1 and self.ica_count >= 1:  
+            self.energy_cap(10)
+            ica = self.ica_damage()
+            print(f"[Ica: Normal Attack]: {self.ica_attack} => {ica}💥")
+            opp.take_damage(ica, self)
         if self.fullhp_count > 0:
             self.fullhp_count -= 1
             if self.fullhp_count == 0:
