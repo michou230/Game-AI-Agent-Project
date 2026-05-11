@@ -14,7 +14,7 @@ class Shared():
         self.poisoned = 0
         self.poisoned_dmg = self.fullhp * 0.05
         pass
-    
+
 class Character:
     #initialization
     def __init__(self,name = "Character",na = "Normal Attack",skill= "Skill",ultimate= "Ultimate",hp = 100):
@@ -120,7 +120,7 @@ class AI(Character):
                 print(f"{self.name} unleashed their Ultimate: {self.ultimate_name} and caused 40 dmg! Your hp is now: 0")
                 opp.take_damage(300)
 
-    #New: utility-based AI
+    #New: utility-based + probability AI
     def ai_move(self, opponent):
 
         utilities = {}

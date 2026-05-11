@@ -45,6 +45,14 @@ class Effects():
     def hp_cap(self):
         if self.hp > self.fullhp:
             self.hp = self.fullhp
+
+    def shield(self,dmg):
+        absorbed = min(self.shield, dmg)
+        self.shield -= absorbed
+        remaining = dmg - absorbed
+        self.hp -= remaining
+        
+
 """ 
 Each character has has the same 5 methods:
     -normal_attack() to perform a normal attack
@@ -69,10 +77,7 @@ class Mydei(Effects,Shared):
     #take damage method
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
-            self.shield -= dmg
-            if self.shield < 0:
-                self.hp += self.shield
-                self.shield = 0
+            self.shield(dmg)
         else: self.hp -= dmg
         if self.hp <= 0 and self.vendetta == 1:
             self.vendetta = 0
@@ -151,7 +156,6 @@ class Blade(Effects,Shared):
         self.counter = 0
         self.stack = 0
         
-
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
             self.shield -= dmg
@@ -256,7 +260,7 @@ class Sparxie(Effects):
         self.na_name = "Cat Got Your Flametoungue?"
         self.punchline = 0
         self.skill_state = 0
-        self.skillCounter = 0
+        self.skill_counter = 0
         self.fullatk = atk
         self.atk = atk
         self.turn = 0
@@ -280,10 +284,7 @@ class Sparxie(Effects):
     
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
-            self.shield -= dmg
-            if self.shield < 0:
-                self.hp += self.shield
-                self.shield = 0
+            self.shield(dmg)
         else: self.hp -= dmg
         
     #skill point cap
@@ -301,11 +302,11 @@ class Sparxie(Effects):
             print(f"[Normal Attack]: {self.na_name} => {dmg}💥")
             opp.take_damage(dmg, self)
         else:
-            dmg = round(self.atk*self.skillCounter * 0.35)
+            dmg = round(self.atk*self.skill_counter * 0.35)
             self.skill_state = 0
-            energy = 30 + self.skillCounter * 2
+            energy = 30 + self.skill_counter * 2
             self.energy_cap(energy)
-            self.skillCounter = 0
+            self.skill_counter = 0
             print(f"[Skill]: {self.skill_name} => {dmg}💥")
             opp.take_damage(dmg, self)
         self.turn_counter(opp)
@@ -318,9 +319,9 @@ class Sparxie(Effects):
             buff = ["Straight Fire","Unreal Banger"]
             weight = [30,70]
             print("Boom! Sparxicle's Poppin' Started!")
-            while self.skill_points > 0 and self.skillCounter < 10:
+            while self.skill_points > 0 and self.skill_counter < 10:
                 self.skill_points -= 1
-                self.skillCounter += 1
+                self.skill_counter += 1
                 buffpick = random.choices(buff,weight)[0]
                 if buffpick == "Straight Fire":
                     self.punchline += 2
@@ -333,7 +334,7 @@ class Sparxie(Effects):
                 pick = 0
                 while pick == 0:
                     try:
-                        decision = int(input(f"[SP]: {self.skill_points} -- Consumed SP: ({self.skillCounter}/10)\nConsume more SP (1) or Attack (2)?: "))
+                        decision = int(input(f"[SP]: {self.skill_points} -- Consumed SP: ({self.skill_counter}/10)\nConsume more SP (1) or Attack (2)?: "))
                         pick = 1
                     except ValueError:
                         print("please pick a number.")
@@ -343,7 +344,7 @@ class Sparxie(Effects):
                     except ValueError:
                         print("please pick a number.")
                 while decision == 1:
-                    if self.skill_points == 0 or self.skillCounter == 10:
+                    if self.skill_points == 0 or self.skill_counter == 10:
                         try:
                             decision = int(input("Cannot consume any more Skill Points. Pick 2 to Attack: "))
                             if decision != 2:
@@ -418,10 +419,7 @@ class Hyacine(Effects,Shared):
             attacked = random.choices(char,weight)[0]
             if attacked == "hyacine":
                 if self.shield > 0:
-                    self.shield -= dmg
-                    if self.shield < 0:
-                        self.hp += self.shield
-                        self.shield = 0
+                    self.shield(dmg)
                 else: self.hp -= dmg
                 print(f"Hyacine has suffered {dmg}💥")
             else: 
@@ -432,10 +430,7 @@ class Hyacine(Effects,Shared):
                     print("Ica has left the field.")
         else:
             if self.shield > 0:
-                    self.shield -= dmg
-                    if self.shield < 0:
-                        self.hp += self.shield
-                        self.shield = 0
+                    self.shield(dmg)
             else: self.hp -= dmg
             
     #Special attack method for Ica
@@ -562,10 +557,7 @@ class Kafka(Effects,Shared):
 
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
-            self.shield -= dmg
-            if self.shield < 0:
-                self.hp += self.shield
-                self.shield = 0
+            self.shield(dmg)
         else: self.hp -= dmg
         if self.atk < 2500:  # or < self.fullatk + self.fullatk * 0.25 if changes were ever done
             self.atk += self.fullatk * 0.025
