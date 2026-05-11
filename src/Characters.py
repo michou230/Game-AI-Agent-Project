@@ -3,8 +3,8 @@ import time
 import sys
 from pathlib import Path
 from colorama import Fore, Style, init
-from playsound import playsound
 from trial import Shared
+import pygame
 #Paths for voicelines
 base = Path(__file__).resolve().parent
 kafka_fua = base.parent / "data" / "assets" / "kafkafua.mp3"
@@ -29,9 +29,9 @@ init()
 #Shared across all characters methods
 class Effects():
     #poison effect
-    def poison(self):
+    def poison(self, opp):
         self.poisoned -= 1
-        self.hp -= self.poisoned_dmg
+        self.take_damage(self.poisoned_dmg, opp)
         print(f"{Fore.MAGENTA}Poison effect! {Style.RESET_ALL} lost {self.poisoned_dmg} hp")
 
     #energy cap so it does not exceed 100
@@ -46,7 +46,7 @@ class Effects():
         if self.hp > self.fullhp:
             self.hp = self.fullhp
 
-    def shield(self,dmg):
+    def shield_dmg(self,dmg):
         absorbed = min(self.shield, dmg)
         self.shield -= absorbed
         remaining = dmg - absorbed
@@ -77,7 +77,7 @@ class Mydei(Effects,Shared):
     #take damage method
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
-            self.shield(dmg)
+            self.shield_dmg(dmg)
         else: self.hp -= dmg
         if self.hp <= 0 and self.vendetta == 1:
             self.vendetta = 0
@@ -124,8 +124,8 @@ class Mydei(Effects,Shared):
             self.hp += heal
             self.hp_cap()
             self.energy = 0
-            playsound(str(mydei), block = False)
-            time.sleep(1)
+            m = pygame.mixer.Sound(str(mydei))
+            m.play()
             slow("Now accept your punishment!")
             time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥, ➕{heal}")
@@ -199,8 +199,8 @@ class Blade(Effects,Shared):
         self.hp_cap()
         self.energy_cap(25)
         opp.take_damage(dmg,self)
-        playsound(str(blade_fua), block = False)
-        time.sleep(1)
+        v = pygame.mixer.Sound(str(blade_fua))
+        v.play()
         slow("A vale to send you!")
         time.sleep(1)
         print(f"[Follow-up ATK]: Shuhu's Gift => {dmg}💥, ➕{heal}")
@@ -230,8 +230,8 @@ class Blade(Effects,Shared):
             self.hp = round(self.fullhp * 0.5)
             dmg = round(self.fullhp * 0.9)
             self.energy = 0
-            playsound(str(blade_ult), block = False)
-            time.sleep(1)
+            u = pygame.mixer.Sound(str(blade_ult))
+            u.play()
             slow("Savor it for me!")
             time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
@@ -284,7 +284,7 @@ class Sparxie(Effects):
     
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
-            self.shield(dmg)
+            self.shield_dmg(dmg)
         else: self.hp -= dmg
         
     #skill point cap
@@ -369,8 +369,8 @@ class Sparxie(Effects):
             dmg = round(self.atk * 1.5)
             self.punchline += 5
             self.energy = 0
-            playsound(str(sparxie), block = False)
-            time.sleep(1)
+            s = pygame.mixer.Sound(str(sparxie))
+            s.play()
             slow("Party 'till the end of the world!")
             time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => {dmg}💥")
@@ -419,7 +419,7 @@ class Hyacine(Effects,Shared):
             attacked = random.choices(char,weight)[0]
             if attacked == "hyacine":
                 if self.shield > 0:
-                    self.shield(dmg)
+                    self.shield_dmg(dmg)
                 else: self.hp -= dmg
                 print(f"Hyacine has suffered {dmg}💥")
             else: 
@@ -430,7 +430,7 @@ class Hyacine(Effects,Shared):
                     print("Ica has left the field.")
         else:
             if self.shield > 0:
-                    self.shield(dmg)
+                    self.shield_dmg(dmg)
             else: self.hp -= dmg
             
     #Special attack method for Ica
@@ -503,8 +503,8 @@ class Hyacine(Effects,Shared):
             self.hp += heal
             self.hp_cap()
             self.heal += heal
-            playsound(str(hyacine), block = False)
-            time.sleep(1)
+            h = pygame.mixer.Sound(str(hyacine))
+            h.play()
             slow("Dispel the gloom, restore the skies!")
             time.sleep(1)
             print(f"[Ultimate]: {self.ultimate_name} => ➕{heal}, new max [HP] => {self.fullhp}")
@@ -556,7 +556,7 @@ class Kafka(Effects,Shared):
 
     def take_damage(self, dmg, opp=None):
         if self.shield > 0:
-            self.shield(dmg)
+            self.shield_dmg(dmg)
         else: self.hp -= dmg
         if self.atk < 2500:  # or < self.fullatk + self.fullatk * 0.25 if changes were ever done
             self.atk += self.fullatk * 0.025
@@ -578,8 +578,8 @@ class Kafka(Effects,Shared):
         dmg = round(self.atk * 0.15)
         opp.poisoned += 2
         self.energy_cap(25)
-        playsound(str(kafka_fua), block = False)
-        time.sleep(1)
+        f = pygame.mixer.Sound(str(kafka_fua))
+        f.play()
         slow("Stand still")
         time.sleep(1)
         print(f"[Follow-up ATK]: Gentle but Cruel => {dmg}💥\nIncreased opponent's poisoned state to {opp.poisoned}")
@@ -609,8 +609,8 @@ class Kafka(Effects,Shared):
         if self.energy == 100:
             dmg = round(self.atk * 0.9)
             self.energy = 0
-            playsound(str(kafka_ult), block = False)
-            time.sleep(1)
+            k = pygame.mixer.Sound(str(kafka_ult))
+            k.play()
             slow("Time to say bye.")
             time.sleep(1.5)
             slow("BOOM.")
