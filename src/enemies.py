@@ -2,15 +2,15 @@ import random
 import time
 import sys
 from pathlib import Path
-from playsound import playsound
 from colorama import Fore, Style, init
+import pygame
 from trial import AI,Shared
 
 
 #Voicelines path
 base = Path(__file__).resolve().parent
-audio = base.parent / "data" / "assets" / "AudioCutter_sundayyy.mp3"
-
+phase2 = base.parent / "data" / "assets" / "AudioCutter_sundayyy.mp3"
+sunday2 = base.parent / "data" / "assets" / "phase2.mp3"
 #method to type slowly
 def slow(text):
     for c in text:
@@ -52,7 +52,9 @@ class Pollux(AI,Shared):
         
     def skill(self, opp):
         if self.skill_points > 0:
-            if opp.hp < 500:
+            if opp.hp == 1:
+                dmg = 1
+            elif opp.hp < 500:
                 dmg = opp.hp - 1
             else:
                 dmg = round(opp.hp * 0.15)
@@ -234,8 +236,9 @@ class Sunday(AI,Shared):
     #second phase transformation method
     def second_phase(self, opp):
         self.poisoned = 0
-        time.sleep(1)
-        playsound(str(audio), block = False)
+        pygame.mixer.music.fadeout(1000)
+        k = pygame.mixer.Sound(str(phase2))
+        k.play()
         time.sleep(2.7)
         slow("\nAll the work of creation has been completed..")
         time.sleep(1.97)
@@ -248,6 +251,9 @@ class Sunday(AI,Shared):
         self.hp = 20000
         time.sleep(4)
         print("The boss has transformed to its second phase!\n")
+        pygame.mixer.music.load(str(sunday2))
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)
         opp.hp += 1500
         opp.hp_cap()
         print("➕ 1500")
