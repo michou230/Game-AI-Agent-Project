@@ -76,8 +76,8 @@ class AI(Character):
 
     def poison(self,opp):
         self.poisoned -= 1
-        self.hp -= self.poisoned_dmg
         print(f"[POISON] => {Fore.MAGENTA}{round(self.poisoned_dmg)}{Style.RESET_ALL}💥")
+        self.hp -= self.poisoned_dmg
         if self.name == "Harmonic Choir":
                 if self.hp <= 0:
                     self.Echos = 0
