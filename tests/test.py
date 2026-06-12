@@ -1,8 +1,6 @@
-from playsound import playsound
-import sys
 import time
 from pathlib import Path
-from playsound import playsound
+
 
 import pygame
 import time
